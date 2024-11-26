@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Slider } from "@nextui-org/slider";
 
 export default function Home() {
   return (
