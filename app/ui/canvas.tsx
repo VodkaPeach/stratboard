@@ -7,7 +7,7 @@ import { svgPaths } from '@/app/library/data';
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
       currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
-      isDrawing, setIsDrawing, isErasingMode, isErasing, setIsErasing
+      isDrawing, setIsDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel
     } = useAppStore((state)=>state)
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [iconDropPos, setIconDropPos] = useState({x: 0, y: 0})
@@ -101,7 +101,7 @@ const Canvas = () => {
       console.log("drag drop icon useEffect")
       if (draggableSrc){
         fabric.Image.fromURL(draggableSrc, (img) => {
-          img.scale(0.05)
+          img.scale(dragZoomLevel)
           img.set({
           left: iconDropPos["x"],
           top: iconDropPos["y"],

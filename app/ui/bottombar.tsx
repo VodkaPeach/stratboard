@@ -1,7 +1,7 @@
 "use client"
 import { useRef, useEffect } from "react";
 import Draggable from "./draggable";
-import { agentIconPaths } from "@/app/library/data";
+import { agents } from "@/app/library/data";
 
 export default function BottomBar(){
     const scrollContainerRef = useRef<HTMLDivElement>(null); // Reference to the scrollable container
@@ -27,9 +27,9 @@ export default function BottomBar(){
       };
     }, []);
     
-    const agentIconArray = agentIconPaths.map(
+    const agentIconArray = agents.map(
         (path, index) => (
-          <Draggable src={path} key={path}/>
+          <Draggable src={`/agent/${path}_icon.webp`} key={path} agent={path}/>
         )
     )
     return(

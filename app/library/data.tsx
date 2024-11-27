@@ -12,6 +12,34 @@ export const svgPaths: string[] = [
     'Sunset',
 ];
 
+export const agents: string[] = [
+    "Astra",
+    "Breach",
+    "Brimstone",
+    "Chamber",
+    "Clove",
+    "Cypher",
+    "Deadlock",
+    "Fade",
+    "Gekko",
+    "Harbor",
+    "Iso",
+    "Jett",
+    "KAYO",
+    "Killjoy",
+    "Neon",
+    "Omen",
+    "Phoenix",
+    "Raze",
+    "Reyna",
+    "Sage",
+    "Skye",
+    "Sova",
+    "Viper",
+    "Vyse",
+    "Yoru",
+]
+
 export const agentIconPaths: string[] = [
     "/agent/Astra_icon.webp",
     "/agent/Breach_icon.webp",

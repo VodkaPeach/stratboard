@@ -12,6 +12,8 @@ export type AppState = {
   isErasing: boolean
   isErasingMode: boolean
   brushThickness: number | number[]
+  currentHoverAgent: string | null
+  dragZoomLevel: number
 }
 
 export type AppActions = {
@@ -25,13 +27,15 @@ export type AppActions = {
   setIsErasingMode: (newIsErasingMode: boolean) => void
   setIsErasing: (newIsErasing: boolean) => void
   setBrushThickness: (newThickness: number | number[]) => void
+  setCurrentHoverAgent: (newHover: string | null) => void
+  setDragZoomLevel: (newZoomLevel: number) => void
 }
 
 export type AppStore = AppState & AppActions
 
 export const initAppStore = ():AppState=>{
   return {map: "Ascent", canvas: null, isAttack: true, svgMaps: null, 
-    currentMapObject: null, draggableSrc: null, isDrawing:false,isErasing:false, isErasingMode:false, brushThickness: 2}
+    currentMapObject: null, draggableSrc: null, isDrawing:false,isErasing:false, isErasingMode:false, brushThickness: 2, currentHoverAgent: null, dragZoomLevel: 1}
 }
 
 export const defaultInitState: AppState = {
@@ -45,6 +49,8 @@ export const defaultInitState: AppState = {
   isErasing:false,
   isErasingMode:false,
   brushThickness: 2,
+  currentHoverAgent: null,
+  dragZoomLevel: 1
 }
 
 export const createAppStore = (
@@ -61,6 +67,8 @@ export const createAppStore = (
     setIsDrawing: (newIsDrawing) => set(()=> ({isDrawing: newIsDrawing})),
     setIsErasing: (newIsErasing) => set(()=> ({isErasing: newIsErasing})),
     setIsErasingMode: (newIsErasingMode) => set(()=> ({isErasingMode: newIsErasingMode})),
-    setBrushThickness: (newThickness) => set(()=>({brushThickness: newThickness}))
+    setBrushThickness: (newThickness) => set(()=>({brushThickness: newThickness})),
+    setCurrentHoverAgent: (newHover) => set(()=>({currentHoverAgent: newHover})),
+    setDragZoomLevel: (newZoomLevel) => set(()=>({dragZoomLevel: newZoomLevel})),
   }))
 }
