@@ -37,7 +37,7 @@ export default function BottomBar(){
     
     const agentIconArray = agents.map(
         (path, index) => (
-          <Draggable src={`/agent/${path}_icon.webp`} key={path} agent={path}/>
+          <Draggable key={path+index} agent={path}/>
         )
     )
     return(

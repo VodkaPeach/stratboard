@@ -7,7 +7,7 @@ import { svgPaths } from '@/app/library/data';
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
       currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
-      isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly
+      isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation
     } = useAppStore((state)=>state)
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [iconDropPos, setIconDropPos] = useState({x: 0, y: 0})
@@ -97,6 +97,17 @@ const Canvas = () => {
       }
     },[isDrawing])
 
+    // drag and drop icon
+    let iconBgColor = ""
+    if (isAlly) {
+        iconBgColor = '#42ffec'
+    }
+    else {
+        iconBgColor = "#ff4242"
+    }
+    if (dragZoomLevel != 0.05) {
+        iconBgColor = ""
+    }
     useEffect(()=>{
       console.log("drag drop icon useEffect")
       if (draggableSrc){
@@ -108,12 +119,12 @@ const Canvas = () => {
           originX: 'center',
           originY: 'center',
           selectable: true,
-          backgroundColor: isAlly? '#42ffec' : "#ff4242"
+          backgroundColor: iconBgColor
           });
           img.lockScalingX=true
           img.lockScalingY=true
-          img.lockRotation=true
-          img.hasControls=false
+          img.lockRotation=lockRotation
+          img.hasControls=!lockRotation
           canvas?.add(img);
           canvas?.renderAll();
           setDraggableSrc('')
