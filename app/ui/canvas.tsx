@@ -136,13 +136,33 @@ const Canvas = () => {
         if (svgMaps) {
             const mapObject = svgMaps[map]
             mapObject.selectable=false;
-            mapObject.flipY=isAttack
             changeCurrentMapObject(mapObject);
             canvas.add(mapObject)
             canvas.renderAll()
         }
       }
-    }, [canvas,map,isAttack]);
+    }, [canvas,map]);
+
+    // flip map useEffect
+    useEffect(()=>{
+        const objects = canvas?.getObjects()
+        objects?.slice(1, ).forEach((e)=>{
+            e.set({flipY:true})
+        })
+        const group = new fabric.Group(objects, {
+            flipY: true
+        })
+        canvas?.add(group)
+        group.destroy();
+        canvas?.remove(group);
+        objects?.forEach((e)=>{
+            e.set("dirty", true);
+        })
+        canvas?.remove(...objects!)
+        canvas?.add.apply(canvas, objects!)
+        console.log(isAttack, objects)
+        canvas?.renderAll()
+    }, [isAttack])
 
     // zoom canvas and drop, dependency: canvas
     useEffect(()=>{
