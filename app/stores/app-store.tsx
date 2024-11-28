@@ -14,6 +14,7 @@ export type AppState = {
   brushThickness: number | number[]
   currentHoverAgent: string | null
   dragZoomLevel: number
+  isAlly: boolean
 }
 
 export type AppActions = {
@@ -29,13 +30,17 @@ export type AppActions = {
   setBrushThickness: (newThickness: number | number[]) => void
   setCurrentHoverAgent: (newHover: string | null) => void
   setDragZoomLevel: (newZoomLevel: number) => void
+  SwitchIsAlly: () => void
 }
 
 export type AppStore = AppState & AppActions
 
 export const initAppStore = ():AppState=>{
   return {map: "Ascent", canvas: null, isAttack: true, svgMaps: null, 
-    currentMapObject: null, draggableSrc: null, isDrawing:false,isErasing:false, isErasingMode:false, brushThickness: 2, currentHoverAgent: null, dragZoomLevel: 1}
+    currentMapObject: null, draggableSrc: null, 
+    isDrawing:false,isErasing:false, isErasingMode:false, 
+    brushThickness: 2, currentHoverAgent: null, dragZoomLevel: 1, isAlly: true
+}
 }
 
 export const defaultInitState: AppState = {
@@ -50,7 +55,8 @@ export const defaultInitState: AppState = {
   isErasingMode:false,
   brushThickness: 2,
   currentHoverAgent: null,
-  dragZoomLevel: 1
+  dragZoomLevel: 1,
+  isAlly: true
 }
 
 export const createAppStore = (
@@ -70,5 +76,6 @@ export const createAppStore = (
     setBrushThickness: (newThickness) => set(()=>({brushThickness: newThickness})),
     setCurrentHoverAgent: (newHover) => set(()=>({currentHoverAgent: newHover})),
     setDragZoomLevel: (newZoomLevel) => set(()=>({dragZoomLevel: newZoomLevel})),
+    SwitchIsAlly: () => set((state) => ({isAlly: !state.isAlly}))
   }))
 }

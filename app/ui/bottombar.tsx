@@ -2,9 +2,17 @@
 import { useRef, useEffect } from "react";
 import Draggable from "./draggable";
 import { agents } from "@/app/library/data";
+import { useAppStore } from "../providers/app-store-provider";
+import clsx from "clsx";
+import Switch from "react-switch";
 
 export default function BottomBar(){
+    const {isAlly, SwitchIsAlly} = useAppStore(state=>state)
     const scrollContainerRef = useRef<HTMLDivElement>(null); // Reference to the scrollable container
+
+    const handleAllySwitch = () => {
+        SwitchIsAlly();
+    }
 
     useEffect(() => {
       // Function to handle the wheel event
@@ -34,8 +42,18 @@ export default function BottomBar(){
     )
     return(
         <div ref={scrollContainerRef} className="flex flow-row overflow-auto">  
-          <div>Ally</div>
-          <div className="flex my-0.5">{agentIconArray}</div>
+          <div className="w-70 pl-20 pr-5 py-5">
+            <Switch 
+                onColor="#42ffec"
+                offColor="#ff4242"
+                checked={isAlly}
+                checkedIcon={false}
+                uncheckedIcon={false}
+                onChange={handleAllySwitch}
+            />
+          </div>
+          <p className="w-32 text-center py-5">{isAlly? 'Ally' : 'Enemy'} </p>
+          <div className="flex my-0.5 pl-5">{agentIconArray}</div>
         </div>
     )
 }

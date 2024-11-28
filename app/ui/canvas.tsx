@@ -7,7 +7,7 @@ import { svgPaths } from '@/app/library/data';
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
       currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
-      isDrawing, setIsDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel
+      isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly
     } = useAppStore((state)=>state)
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [iconDropPos, setIconDropPos] = useState({x: 0, y: 0})
@@ -108,7 +108,7 @@ const Canvas = () => {
           originX: 'center',
           originY: 'center',
           selectable: true,
-          backgroundColor: ""
+          backgroundColor: isAlly? '#42ffec' : "#ff4242"
           });
           img.lockScalingX=true
           img.lockScalingY=true
