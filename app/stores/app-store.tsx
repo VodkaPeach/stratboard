@@ -16,6 +16,7 @@ export type AppState = {
   dragZoomLevel: number
   isAlly: boolean
   lockRotation: boolean
+  isDeleting: boolean
 }
 
 export type AppActions = {
@@ -33,6 +34,7 @@ export type AppActions = {
   setDragZoomLevel: (newZoomLevel: number) => void
   SwitchIsAlly: () => void
   setLockRotation: (newLock: boolean) => void
+  setIsDeleting: (newIsDelete: boolean) => void
 }
 
 export type AppStore = AppState & AppActions
@@ -43,7 +45,8 @@ export const initAppStore = ():AppState=>{
     isDrawing:false,isErasing:false, isErasingMode:false, 
     brushThickness: 2, currentHoverAgent: null, 
     dragZoomLevel: 1, isAlly: true,
-    lockRotation: true
+    lockRotation: true,
+    isDeleting: false
 }
 }
 
@@ -62,7 +65,7 @@ export const defaultInitState: AppState = {
   dragZoomLevel: 1,
   isAlly: true,
   lockRotation: true,
-
+    isDeleting: false
 }
 
 export const createAppStore = (
@@ -83,6 +86,7 @@ export const createAppStore = (
     setCurrentHoverAgent: (newHover) => set(()=>({currentHoverAgent: newHover})),
     setDragZoomLevel: (newZoomLevel) => set(()=>({dragZoomLevel: newZoomLevel})),
     SwitchIsAlly: () => set((state) => ({isAlly: !state.isAlly})),
-    setLockRotation: (newLock) => set((state)=>({lockRotation: newLock}))
+    setLockRotation: (newLock) => set((state)=>({lockRotation: newLock})),
+    setIsDeleting: (newIsDelete) => set(()=>({isDeleting: newIsDelete}))
   }))
 }

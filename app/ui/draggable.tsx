@@ -14,7 +14,7 @@ const Draggable: React.FC<MyComponentProps> = ( {agent}) => {
     const {refs, floatingStyles, context} = useFloating({
         open: isPop,
         onOpenChange: setIsPop,
-        middleware: [shift(), offset(5), shift()],
+        middleware: [offset()],
         whileElementsMounted: autoUpdate,
         placement: 'top',
     });

@@ -4,6 +4,7 @@ import TopNav from "../ui/topnav";
 import SideMenu from "../ui/sidemenu";
 import BottomBar from "../ui/bottombar";
 import { useAppStore } from "../providers/app-store-provider";
+import RightPanel from "../ui/rightPanel";
 export default function StratBoard () {
     const {setCurrentHoverAgent} = useAppStore(state=>state)
     const handleResetHover = () => {
@@ -15,7 +16,7 @@ export default function StratBoard () {
             <div className="flex w-full h-4/5 flex-row border-b">
                 <div className="border-r px-3 w-72 overflow-auto"><SideMenu /></div>
                 <div onClick={handleResetHover} className="border-r flex-1 overflow-hidden"><Canvas /></div>
-                <div className="w-72"></div>
+                <RightPanel />
             </div>
             <div className="h-1/6"><BottomBar /></div>
         </div>

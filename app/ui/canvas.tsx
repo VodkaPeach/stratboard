@@ -7,8 +7,9 @@ import { svgPaths } from '@/app/library/data';
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
       currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
-      isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation
+      isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting
     } = useAppStore((state)=>state)
+    const [dragTarget, setDragTarget] = useState<fabric.Object | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [iconDropPos, setIconDropPos] = useState({x: 0, y: 0})
     interface LoadedSVG {
@@ -67,12 +68,12 @@ const Canvas = () => {
           };
           // Handle drop event to create a new image instance on the canvas
           const handleDrop = (event: DragEvent) => {
-              event.preventDefault();
-              const imageUrl = event.dataTransfer?.getData('text/plain');
-              
-              if (imageUrl) {
+            event.preventDefault();
+            const imageUrl = event.dataTransfer?.getData('text/plain');
+            
+            if (imageUrl) {
                 setDraggableSrc(imageUrl)
-              }
+            }
           };
             // Attach event listeners to the canvas container
             const canvasContainer = canvasRef.current.parentNode as HTMLElement | null;
@@ -179,6 +180,7 @@ const Canvas = () => {
     useEffect(()=>{
       if (canvas) {
         canvas.on('mouse:wheel', (opt) => {
+            
           const delta = opt.e.deltaY;
           let zoom:number = canvas.getZoom();
           zoom*=0.999**delta;
@@ -189,8 +191,8 @@ const Canvas = () => {
           opt.e.stopPropagation();
         });
         canvas.on('drop', (opt)=>{
-          const pointer = canvas.getPointer(opt.e);
-          setIconDropPos({x: pointer!.x, y:pointer!.y})
+            const pointer = canvas.getPointer(opt.e);
+            setIconDropPos({x: pointer!.x, y:pointer!.y})
         })
       }
       return () => {
@@ -232,6 +234,9 @@ const Canvas = () => {
   useEffect(()=>{
     if(canvas){
       canvas.on('mouse:down', function(this: any, opt){
+        if (opt.target?.isType("image")) {
+            setDragTarget(opt.target)
+        }
         if(isErasingMode){
           setIsErasing(true)
           //console.log("mouse down start erasing")
@@ -257,6 +262,10 @@ const Canvas = () => {
   useEffect(()=>{
     if(canvas){
       canvas.on('mouse:up', function(this: any, opt) {
+        if (isDeleting && dragTarget) {
+            canvas.remove(dragTarget)
+        }
+        setDragTarget(null);
         if(isErasing){
           setIsErasing(false)
           //console.log("mouse up stop erasing")
@@ -273,7 +282,7 @@ const Canvas = () => {
     return () => {
       canvas?.off("mouse:up");
     }
-  }, [canvas, isErasing])
+  }, [canvas, isErasing, isDeleting])
 
     return (
         <div >

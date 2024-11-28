@@ -3,7 +3,7 @@ import MapMenu from "./dropdown"
 import SizeSlider from "./slider"
 import { useAppStore } from "@/app/providers/app-store-provider"
 export default function SideMenu(){
-    const {changeSide, isDrawing, setIsDrawing, isErasingMode, setIsErasingMode} = useAppStore(state=>state)
+    const {changeSide, isDrawing, setIsDrawing, isErasingMode, setIsErasingMode, canvas} = useAppStore(state=>state)
     const handleChangeSide = () => {
         changeSide()
     }
@@ -14,6 +14,9 @@ export default function SideMenu(){
     const handleIsErasingModeSwitch = () => {
         setIsDrawing(false)
         setIsErasingMode(!isErasingMode)
+    }
+    const handleDeleteEverything  = () => {
+        canvas?.remove(...canvas?.getObjects().slice(1, ))
     }
     const sequence = [...Array(11).keys()].slice(1).map((value) => <button key={value} className="">{value}</button>)
     return(
@@ -30,7 +33,7 @@ export default function SideMenu(){
             </div>
             <div className="my-2 w-full">
                 <div>Delete</div>
-                <button>Everything</button>
+                <button onClick={handleDeleteEverything}>Everything</button>
                 <button>Sequence step 1</button>
             </div>
             <div>
