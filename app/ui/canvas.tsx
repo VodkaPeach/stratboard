@@ -7,7 +7,8 @@ import { svgPaths } from '@/app/library/data';
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
       currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
-      isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting
+      isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting,
+      brushWidth, brushColor
     } = useAppStore((state)=>state)
     const [dragTarget, setDragTarget] = useState<fabric.Object | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -58,6 +59,7 @@ const Canvas = () => {
             fabricCanvas.backgroundColor = 'lightgray';
             fabric.Object.prototype.selectable = false;
 
+            fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
 
             fabricCanvas.renderAll();
 
@@ -90,6 +92,15 @@ const Canvas = () => {
             };
         }
     }, [svgMaps]);
+
+    // default drawing preferences
+    useEffect(() => {
+        if(canvas?.freeDrawingBrush) {
+            canvas.freeDrawingBrush.color = brushColor;
+            canvas.freeDrawingBrush.width = brushWidth as number;
+            //canvas.freeDrawingBrush.cursorStyle = 'default';
+        }
+    }, [canvas, brushWidth, brushColor])
 
     useEffect(()=>{
       console.log("set isDrawing useEffect")

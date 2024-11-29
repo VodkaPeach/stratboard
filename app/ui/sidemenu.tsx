@@ -2,8 +2,16 @@
 import MapMenu from "./dropdown"
 import SizeSlider from "./slider"
 import { useAppStore } from "@/app/providers/app-store-provider"
+import { colorPalette } from "../library/data"
 export default function SideMenu(){
-    const {changeSide, isDrawing, setIsDrawing, isErasingMode, setIsErasingMode, canvas} = useAppStore(state=>state)
+    const {
+        changeSide, 
+        isDrawing, setIsDrawing, 
+        isErasingMode, setIsErasingMode, 
+        canvas,
+        setBrushColor,
+        setBrushWidth
+    } = useAppStore(state=>state)
     const handleChangeSide = () => {
         changeSide()
     }
@@ -18,7 +26,11 @@ export default function SideMenu(){
     const handleDeleteEverything  = () => {
         canvas?.remove(...canvas?.getObjects().slice(1, ))
     }
+    const handleChangeBrushColor = (color: string) => {
+        setBrushColor(color);
+    }
     const sequence = [...Array(11).keys()].slice(1).map((value) => <button key={value} className="">{value}</button>)
+    const colorBlocks = colorPalette.map((value, index) => <button key={index+value} onClick={()=>{handleChangeBrushColor(value)}} className={`bg-[${value}] w-10 h-10`}></button>)
     return(
         <div className="flex flex-col my-3">
             <div className="flex flex-row basis-1/6">
@@ -43,6 +55,7 @@ export default function SideMenu(){
                     <button onClick={handleIsErasingModeSwitch}>Eraser</button>
                 </div>
                 <div>
+                    {(isDrawing || isErasingMode) && <div className="">{colorBlocks}</div>}
                     {(isDrawing || isErasingMode) && <SizeSlider />}
                 </div>
             </div>

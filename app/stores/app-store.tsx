@@ -11,12 +11,13 @@ export type AppState = {
   isDrawing: boolean
   isErasing: boolean
   isErasingMode: boolean
-  brushThickness: number | number[]
   currentHoverAgent: string | null
   dragZoomLevel: number
   isAlly: boolean
   lockRotation: boolean
   isDeleting: boolean
+  brushColor: string
+  brushWidth: number | number[]
 }
 
 export type AppActions = {
@@ -29,12 +30,13 @@ export type AppActions = {
   setIsDrawing: (newIsDrawing: boolean) => void
   setIsErasingMode: (newIsErasingMode: boolean) => void
   setIsErasing: (newIsErasing: boolean) => void
-  setBrushThickness: (newThickness: number | number[]) => void
   setCurrentHoverAgent: (newHover: string | null) => void
   setDragZoomLevel: (newZoomLevel: number) => void
   SwitchIsAlly: () => void
   setLockRotation: (newLock: boolean) => void
   setIsDeleting: (newIsDelete: boolean) => void
+  setBrushColor: (newBrushColor: string) => void
+  setBrushWidth: (newBrushWidth: number | number[]) => void
 }
 
 export type AppStore = AppState & AppActions
@@ -43,10 +45,12 @@ export const initAppStore = ():AppState=>{
   return {map: "Ascent", canvas: null, isAttack: true, svgMaps: null, 
     currentMapObject: null, draggableSrc: null, 
     isDrawing:false,isErasing:false, isErasingMode:false, 
-    brushThickness: 2, currentHoverAgent: null, 
+    currentHoverAgent: null, 
     dragZoomLevel: 1, isAlly: true,
     lockRotation: true,
-    isDeleting: false
+    isDeleting: false,
+    brushColor: "black",
+    brushWidth: 2,
 }
 }
 
@@ -60,12 +64,13 @@ export const defaultInitState: AppState = {
   isDrawing:false,
   isErasing:false,
   isErasingMode:false,
-  brushThickness: 2,
   currentHoverAgent: null,
   dragZoomLevel: 1,
   isAlly: true,
   lockRotation: true,
-    isDeleting: false
+    isDeleting: false,
+    brushColor: "black",
+    brushWidth: 2,
 }
 
 export const createAppStore = (
@@ -82,11 +87,12 @@ export const createAppStore = (
     setIsDrawing: (newIsDrawing) => set(()=> ({isDrawing: newIsDrawing})),
     setIsErasing: (newIsErasing) => set(()=> ({isErasing: newIsErasing})),
     setIsErasingMode: (newIsErasingMode) => set(()=> ({isErasingMode: newIsErasingMode})),
-    setBrushThickness: (newThickness) => set(()=>({brushThickness: newThickness})),
     setCurrentHoverAgent: (newHover) => set(()=>({currentHoverAgent: newHover})),
     setDragZoomLevel: (newZoomLevel) => set(()=>({dragZoomLevel: newZoomLevel})),
     SwitchIsAlly: () => set((state) => ({isAlly: !state.isAlly})),
     setLockRotation: (newLock) => set((state)=>({lockRotation: newLock})),
-    setIsDeleting: (newIsDelete) => set(()=>({isDeleting: newIsDelete}))
+    setIsDeleting: (newIsDelete) => set(()=>({isDeleting: newIsDelete})),
+    setBrushColor: (newColor) => set(() => ({brushColor: newColor})),
+    setBrushWidth: (newWidth) =>set(() => ({brushWidth: newWidth}))
   }))
 }

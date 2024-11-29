@@ -67,3 +67,10 @@ export const abilityProps = {
     "Vyse": ["N", "N", "N", "N"],
     "Yoru": ["N", "N", "N", "N"],
 }
+
+export const colorPalette = [
+    "#fa0202",
+    "#ffffff",
+    "#000000",
+    "#fcff40",
+]

@@ -1,11 +1,12 @@
 "use client"
 import { useAppStore } from "../providers/app-store-provider"
-import { useFloating, offset } from "@floating-ui/react"
+import { useFloating, offset, autoUpdate } from "@floating-ui/react"
 const RightPanel = () => {
     const {setIsDeleting} = useAppStore(state=>state)
-    const {refs, floatingStyles, context} = useFloating({
+    const {refs, floatingStyles} = useFloating({
         middleware: [offset(10)],
-        placement: 'left',
+        whileElementsMounted: autoUpdate,
+        placement: 'left-start',
     });
     const handleDeleteOn = () => {
         setIsDeleting(true)
@@ -14,14 +15,14 @@ const RightPanel = () => {
         setIsDeleting(false)
     }
     return (
-        <div className="w-72" >
+        <div className="w-72 my-2" >
             <div ref={refs.setReference}>
                 Right Panel
             </div>
             <div
                 ref={refs.setFloating}
                 style={floatingStyles}
-                className="bg-orange-700 w-20 h-20"
+                className="bg-orange-700 w-16 h-16"
                 onMouseEnter={handleDeleteOn}
                 onMouseLeave={handleDeleteOff}
             >
