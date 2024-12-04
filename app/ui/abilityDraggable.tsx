@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image"
-import { abilityProps } from "../library/data"
+import { abilityProps, abilityAlts } from "../library/data"
 import { useAppStore } from "../providers/app-store-provider"
 type skillComponentProps = {
     agent: string | null,
@@ -19,7 +19,12 @@ const Ability: React.FC<skillComponentProps> = ( {agent, skill, index} ) => {
             default:
                 setLockRotation(false);
         }
-        event.dataTransfer?.setData('text/plain', `/ability/${agent}/${skill}.webp`)
+        let abilitySrc = `/ability/${agent}/${skill}.webp`
+        if (abilityAlts[agent as keyof {}][index] != "N"){
+            abilitySrc = abilityAlts[agent as keyof {}][index]
+            setDragZoomLevel(0.24)
+        }
+        event.dataTransfer?.setData('text/plain', abilitySrc)
     }
     return (
         <Image 

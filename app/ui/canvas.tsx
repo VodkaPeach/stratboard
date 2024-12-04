@@ -56,7 +56,7 @@ const Canvas = () => {
 
             changeCanvas(fabricCanvas);
     
-            fabricCanvas.backgroundColor = 'lightgray';
+            fabricCanvas.backgroundColor = 'black';
             fabric.Object.prototype.selectable = false;
 
             fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
@@ -159,6 +159,7 @@ const Canvas = () => {
         if (svgMaps) {
             const mapObject = svgMaps[map]
             mapObject.selectable=false;
+            mapObject.objectCaching=false;
             changeCurrentMapObject(mapObject);
             canvas.add(mapObject)
             canvas.renderAll()
@@ -195,7 +196,7 @@ const Canvas = () => {
           const delta = opt.e.deltaY;
           let zoom:number = canvas.getZoom();
           zoom*=0.999**delta;
-          if(zoom>3) zoom=3;
+          if(zoom>2) zoom=2;
           if(zoom<0.5) zoom=0.5;
           canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
           opt.e.preventDefault();
