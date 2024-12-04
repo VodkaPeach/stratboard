@@ -3,6 +3,7 @@ import MapMenu from "./dropdown"
 import SizeSlider from "./slider"
 import { useAppStore } from "@/app/providers/app-store-provider"
 import { colorPalette } from "../library/data"
+import StepButton from "./stepButton"
 export default function SideMenu(){
     const {
         changeSide, 
@@ -10,7 +11,8 @@ export default function SideMenu(){
         isErasingMode, setIsErasingMode, 
         canvas,
         setBrushColor,
-        setBrushWidth
+        setStepState,
+        setStepDeletedObjects
     } = useAppStore(state=>state)
     const handleChangeSide = () => {
         changeSide()
@@ -25,11 +27,13 @@ export default function SideMenu(){
     }
     const handleDeleteEverything  = () => {
         canvas?.remove(...canvas?.getObjects().slice(1, ))
+        setStepState([[],[],[],[],[],[],[],[],[],[]])
+        setStepDeletedObjects([[],[],[],[],[],[],[],[],[],[]])
     }
     const handleChangeBrushColor = (color: string) => {
         setBrushColor(color);
     }
-    const sequence = [...Array(11).keys()].slice(1).map((value) => <button key={value} className="">{value}</button>)
+    const sequence = [...Array(11).keys()].slice(1).map((value) => <StepButton key={value} value={value}/>)
     const colorBlocks = colorPalette.map((value, index) => <button key={index+value} onClick={()=>{handleChangeBrushColor(value)}} className={`bg-[${value}] w-10 h-10`}></button>)
     return(
         <div className="flex flex-col my-3">

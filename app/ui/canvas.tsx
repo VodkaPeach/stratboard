@@ -6,9 +6,9 @@ import { svgPaths } from '@/app/library/data';
 
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
-      currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
-      isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting,
-      brushWidth, brushColor
+    currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
+    isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting,
+    brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects, 
     } = useAppStore((state)=>state)
     const [dragTarget, setDragTarget] = useState<fabric.Object | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -16,7 +16,13 @@ const Canvas = () => {
     interface LoadedSVG {
         path: string;
         svg: fabric.Object;
-      }
+    }
+
+    const removeObjectFromStepsForward = (object: fabric.Object) => {
+        for(let i = currentStep-1; i<10; i++) {
+            stepState[i].push(object)
+        }
+    }
 
     useEffect(()=>{
       console.log("SVG LOAD useEffect")
@@ -120,6 +126,27 @@ const Canvas = () => {
     if (dragZoomLevel != 0.05) {
         iconBgColor = ""
     }
+
+    // initial load step
+    useEffect(()=>{
+        setCurrentStep(1);
+    }, [])
+
+    // load step
+    useEffect(() => {
+        // remove all objects except map
+        const activeObjects = canvas?.getObjects().slice(1,)
+        canvas?.remove(...activeObjects!)
+        // add all from previous steps
+        for(let i=0; i<currentStep; i++) {
+            stepState[i].forEach((object) => {
+                if(!stepDeletedObjects[currentStep-1].includes(object)){
+                    canvas?.add(object)
+                }
+            })
+        }
+    }, [currentStep])
+
     useEffect(()=>{
       console.log("drag drop icon useEffect")
       if (draggableSrc){
@@ -138,6 +165,7 @@ const Canvas = () => {
           img.lockRotation=lockRotation
           img.hasControls=!lockRotation
           canvas?.add(img);
+          stepState[currentStep-1].push(img)
           canvas?.renderAll();
           setDraggableSrc('')
       });
@@ -152,7 +180,7 @@ const Canvas = () => {
       }
     },[map])
 
-    // Load and center SVG on the canvas
+    // Load map on the canvas
     useEffect(() => {
       console.log("load map useEffect")
       if (canvas) {
@@ -171,10 +199,11 @@ const Canvas = () => {
     useEffect(()=>{
         const objects = canvas?.getObjects()
         objects?.slice(1, ).forEach((e)=>{
-            e.set({flipY:true})
+            e.set({flipY:true, flipX: true})
         })
         const group = new fabric.Group(objects, {
-            flipY: true
+            flipY: true,
+            flipX: true
         })
         canvas?.add(group)
         group.destroy();
@@ -184,6 +213,7 @@ const Canvas = () => {
         })
         canvas?.remove(...objects!)
         canvas?.add.apply(canvas, objects!)
+        //stepState[currentStep].push(...objects!)
         console.log(isAttack, objects)
         canvas?.renderAll()
     }, [isAttack])
@@ -219,11 +249,11 @@ const Canvas = () => {
         if(canvas){            
             canvas.on('mouse:move', function(this: any, opt) {
               if (isErasing) {
-                console.log(opt.target)
                 const erasingTarget = opt.target;
                 if ( erasingTarget?.isType("path") ){
-                  canvas.remove(erasingTarget);
-                  canvas.renderAll();
+                    removeObjectFromStepsForward(erasingTarget)
+                    canvas.remove(erasingTarget);
+                    canvas.renderAll();
                 }
               }
               if (this.isDragging) {
@@ -289,12 +319,24 @@ const Canvas = () => {
           this.isDragging = false;
         }
         
-      });
+      }
+      
+    );
     }
     return () => {
       canvas?.off("mouse:up");
     }
   }, [canvas, isErasing, isDeleting])
+
+  useEffect(()=>{
+    canvas?.on("path:created", (e)=>{
+        stepState[currentStep-1].push(canvas?.getObjects().at(-1)!)
+    })
+    return () => {
+        canvas?.off("path:created")
+    }
+  })
+  
 
     return (
         <div >

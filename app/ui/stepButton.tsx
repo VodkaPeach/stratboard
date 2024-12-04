@@ -5,13 +5,9 @@ type stepNumberButton = {
     value: number
 }
 const StepButton: React.FC<stepNumberButton> = ({value}) => {
-    const {canvas, currentStep, setCurrentStep, stepState, setStepState} = useAppStore(state=>state);
+    const {currentStep, setCurrentStep} = useAppStore(state=>state);
     const handleChangeStep = () => {
         if (value != currentStep) {
-            const currentState = JSON.stringify(canvas);
-            const stateCopy = stepState;
-            stateCopy[currentStep] = currentState;
-            setStepState(stateCopy);
             setCurrentStep(value);
         }
     }

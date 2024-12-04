@@ -19,7 +19,8 @@ export type AppState = {
   brushColor: string
   brushWidth: number | number[]
   currentStep: number
-  stepState: string[]
+  stepState: fabric.Object[][]
+  stepDeletedObjects: fabric.Object[][]
 }
 
 export type AppActions = {
@@ -40,7 +41,8 @@ export type AppActions = {
   setBrushColor: (newBrushColor: string) => void
   setBrushWidth: (newBrushWidth: number | number[]) => void
   setCurrentStep: (step: number) => void
-  setStepState: (newStepState: string[]) => void
+  setStepState: (newStepState: fabric.Object[][]) => void
+  setStepDeletedObjects: (newObjects: fabric.Object[][]) => void
 }
 
 export type AppStore = AppState & AppActions
@@ -55,30 +57,32 @@ export const initAppStore = ():AppState=>{
         isDeleting: false,
         brushColor: "black",
         brushWidth: 2,
-        currentStep: 1,
-        stepState: []
+        currentStep: 0,
+        stepState: [[],[],[],[],[],[],[],[],[],[]],
+        stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]]
     }
 }
 
 export const defaultInitState: AppState = {
-  map: "Abyss_minimap",
-  canvas: null,
-  isAttack: true,
-  svgMaps: null,
-  currentMapObject: null,
-  draggableSrc: null,
-  isDrawing:false,
-  isErasing:false,
-  isErasingMode:false,
-  currentHoverAgent: null,
-  dragZoomLevel: 1,
-  isAlly: true,
-  lockRotation: true,
+    map: "Abyss_minimap",
+    canvas: null,
+    isAttack: true,
+    svgMaps: null,
+    currentMapObject: null,
+    draggableSrc: null,
+    isDrawing:false,
+    isErasing:false,
+    isErasingMode:false,
+    currentHoverAgent: null,
+    dragZoomLevel: 1,
+    isAlly: true,
+    lockRotation: true,
     isDeleting: false,
     brushColor: "black",
     brushWidth: 2,
-    currentStep: 1, 
-    stepState: []
+    currentStep: 0, 
+    stepState: [[],[],[],[],[],[],[],[],[],[]],
+    stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
 }
 
 export const createAppStore = (
@@ -103,6 +107,7 @@ export const createAppStore = (
     setBrushColor: (newColor) => set(() => ({brushColor: newColor})),
     setBrushWidth: (newWidth) =>set(() => ({brushWidth: newWidth})),
     setCurrentStep: (step) => set(()=>({currentStep: step})),
-    setStepState: (newStepState) => set(()=>({stepState: newStepState}))
+    setStepState: (newStepState) => set(()=>({stepState: newStepState})),
+    setStepDeletedObjects: (newStepState) => set(()=>({stepState: newStepState})),
   }))
 }
