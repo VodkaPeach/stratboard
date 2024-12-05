@@ -21,6 +21,7 @@ export type AppState = {
   currentStep: number
   stepState: fabric.Object[][]
   stepDeletedObjects: fabric.Object[][]
+  hoveredObject: fabric.Object | null
 }
 
 export type AppActions = {
@@ -43,6 +44,7 @@ export type AppActions = {
   setCurrentStep: (step: number) => void
   setStepState: (newStepState: fabric.Object[][]) => void
   setStepDeletedObjects: (newObjects: fabric.Object[][]) => void
+  setHoveredObject: (target: fabric.Object | null) => void
 }
 
 export type AppStore = AppState & AppActions
@@ -59,7 +61,8 @@ export const initAppStore = ():AppState=>{
         brushWidth: 2,
         currentStep: 0,
         stepState: [[],[],[],[],[],[],[],[],[],[]],
-        stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]]
+        stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
+        hoveredObject: null
     }
 }
 
@@ -83,6 +86,7 @@ export const defaultInitState: AppState = {
     currentStep: 0, 
     stepState: [[],[],[],[],[],[],[],[],[],[]],
     stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
+    hoveredObject: null
 }
 
 export const createAppStore = (
@@ -109,5 +113,6 @@ export const createAppStore = (
     setCurrentStep: (step) => set(()=>({currentStep: step})),
     setStepState: (newStepState) => set(()=>({stepState: newStepState})),
     setStepDeletedObjects: (newStepState) => set(()=>({stepState: newStepState})),
+    setHoveredObject: (target) => set(()=>({hoveredObject: target}))
   }))
 }

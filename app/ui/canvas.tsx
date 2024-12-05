@@ -3,13 +3,15 @@ import { useEffect, useRef, useState } from 'react';
 import {fabric} from 'fabric';
 import { useAppStore } from '@/app/providers/app-store-provider';
 import { svgPaths } from '@/app/library/data';
+import { skip } from 'node:test';
 
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
-    currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
+    currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc, setIsDrawing, SwitchIsAlly,
     isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting,
     brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects, 
     } = useAppStore((state)=>state)
+    const [hoveredObject, setHoveredObject] = useState<fabric.Object | null>(null)
     const [dragTarget, setDragTarget] = useState<fabric.Object | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [iconDropPos, setIconDropPos] = useState({x: 0, y: 0})
@@ -83,6 +85,7 @@ const Canvas = () => {
                 setDraggableSrc(imageUrl)
             }
           };
+          
             // Attach event listeners to the canvas container
             const canvasContainer = canvasRef.current.parentNode as HTMLElement | null;
             if (canvasContainer){
@@ -172,6 +175,25 @@ const Canvas = () => {
       }
        
     }, [draggableSrc])
+
+    useEffect(()=>{
+        canvas?.on("mouse:over", (e)=>{
+            if (e.target?.isType("image")){
+                console.log(e.target)
+                setHoveredObject(e.target)
+            }
+        })
+        return () => {
+            canvas?.off("mouse:over")
+        }
+    }, [canvas])
+
+    useEffect(()=> {
+        if(hoveredObject && isDeleting){
+            canvas?.remove(hoveredObject)
+        }
+    }, [isDeleting, hoveredObject])
+
 
     useEffect(()=>{
       console.log("clear canvas useEffect")

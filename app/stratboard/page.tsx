@@ -5,11 +5,48 @@ import SideMenu from "../ui/sidemenu";
 import BottomBar from "../ui/bottombar";
 import { useAppStore } from "../providers/app-store-provider";
 import RightPanel from "../ui/rightPanel";
+import { useEffect } from "react";
 export default function StratBoard () {
-    const {setCurrentHoverAgent} = useAppStore(state=>state)
+    const {setCurrentHoverAgent, isDrawing, setIsDrawing, isErasing, setIsDeleting, setIsErasing, SwitchIsAlly } = useAppStore(state=>state)
     const handleResetHover = () => {
         setCurrentHoverAgent(null)
     }
+    useEffect(()=>{
+        const handleKeydown = (e: KeyboardEvent) =>{
+            switch(e.key){
+                case "e":
+                    setIsDeleting(true)
+                    break;
+                case "q":
+                    setIsErasing(false)
+                    setIsDrawing(!isDrawing)
+                    break;
+                case "w":
+                    setIsDrawing(false);
+                    setIsErasing(!isErasing)
+                    break;
+                case "r":
+                    SwitchIsAlly();
+                    break;
+                default:
+            }
+        }
+        const handleKeyUp = (e: KeyboardEvent) =>{
+            switch(e.key){
+                case "e":
+                    setIsDeleting(false)
+                    break;
+                default:
+            }
+        }
+        window.addEventListener("keydown", handleKeydown);
+        window.addEventListener("keyup", handleKeyUp)
+        return () => {
+            window.removeEventListener("keydown", handleKeydown);
+            window.removeEventListener("keyup", handleKeyUp)
+        }
+    }, [])
+    
     return (
         <div className="flex flex-col h-screen text-2xl">
             <div className="border-b px-60 py-3"><TopNav /></div>
