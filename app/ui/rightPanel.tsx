@@ -17,7 +17,7 @@ const RightPanel = () => {
     return (
         <div className="w-72 my-2" >
             <div ref={refs.setReference}>
-                Right Panel
+                b站@六時の雨
             </div>
             <div
                 ref={refs.setFloating}

@@ -22,7 +22,7 @@ const Canvas = () => {
 
     const removeObjectFromStepsForward = (object: fabric.Object) => {
         for(let i = currentStep-1; i<10; i++) {
-            stepState[i].push(object)
+            stepDeletedObjects[i].push(object)
         }
     }
 
@@ -191,6 +191,7 @@ const Canvas = () => {
     useEffect(()=> {
         if(hoveredObject && isDeleting){
             canvas?.remove(hoveredObject)
+            removeObjectFromStepsForward(hoveredObject)
         }
     }, [isDeleting, hoveredObject])
 

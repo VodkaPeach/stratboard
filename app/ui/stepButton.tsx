@@ -1,6 +1,7 @@
 "use client"
 import React from "react"
 import { useAppStore } from "../providers/app-store-provider"
+import clsx from "clsx"
 type stepNumberButton = {
     value: number
 }
@@ -13,6 +14,11 @@ const StepButton: React.FC<stepNumberButton> = ({value}) => {
     }
     return(
         <button
+            className={clsx(
+                'w-10 h-10 rounded-md',
+                {
+                'bg-cyan-800': currentStep === value
+            })}
             onClick={handleChangeStep}
         >
             {value}

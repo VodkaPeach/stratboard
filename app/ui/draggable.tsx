@@ -47,9 +47,9 @@ const Draggable: React.FC<MyComponentProps> = ( {agent}) => {
                 src={`/agent/${agent}_icon.webp`}
                 alt={'agent icon'} 
                 draggable={true}
-                width={80}
-                height={80}
-                className="bg-slate-600 hover:bg-white rounded-lg border-2 border-blue-950" 
+                width={85}
+                height={85}
+                className="bg-slate-800 hover:bg-sky-800 rounded-lg" 
                 onDragStart={(e)=>handleAgentDragStart(e, `/agent/${agent}_icon.webp`)}
                 onMouseEnter={handlePop}
                 ref={refs.setReference}

@@ -20,7 +20,7 @@ export default function MapMenu() {
     return(
         <Dropdown>
             <DropdownTrigger>
-                <button className="w-3/4 rounded-md h-8 bg-slate-600">
+                <button className="w-48 rounded-md h-16 bg-slate-600">
                     {map}
                 </button>
             </DropdownTrigger>

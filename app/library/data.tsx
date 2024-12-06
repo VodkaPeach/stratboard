@@ -41,7 +41,7 @@ export const agents: string[] = [
 ]
 
 export const abilityAlts = {
-    "Astra": ["/ability/Astra/E-alt.png", "N", "N", "N"],
+    "Astra": ["N", "N", "/ability/Astra/E-alt.png", "N"],
     "Breach": ["N", "N", "N", "N"],
     "Brimstone": ["N", "N", "N", "N"],
     "Chamber": ["N", "N", "N", "N"],

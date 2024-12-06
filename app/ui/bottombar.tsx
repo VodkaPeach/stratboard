@@ -42,7 +42,7 @@ export default function BottomBar(){
     )
     return(
         <div ref={scrollContainerRef} className="flex flow-row overflow-auto">  
-          <div className="w-70 pl-20 pr-5 py-5">
+          <div className="w-70 pl-20 pr-5 py-8">
             <Switch 
                 onColor="#42ffec"
                 offColor="#ff4242"
@@ -52,8 +52,8 @@ export default function BottomBar(){
                 onChange={handleAllySwitch}
             />
           </div>
-          <p className="w-32 text-center py-5">{isAlly? 'Ally' : 'Enemy'} </p>
-          <div className="flex my-0.5 pl-5">{agentIconArray}</div>
+          <p className="w-32 text-center py-8">{isAlly? '友方' : '敌方'} </p>
+          <div className="flex my-0.5 pl-12 gap-1 py-1">{agentIconArray}</div>
         </div>
     )
 }
