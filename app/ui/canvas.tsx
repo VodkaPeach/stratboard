@@ -157,6 +157,7 @@ const Canvas = () => {
           img.scale(dragZoomLevel)
           img.set({
           left: iconDropPos["x"],
+          hasBorders: false,
           top: iconDropPos["y"],
           originX: 'center',
           originY: 'center',

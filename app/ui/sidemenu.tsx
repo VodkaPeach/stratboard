@@ -6,8 +6,6 @@ import { colorPalette } from "../library/data"
 import StepButton from "./stepButton"
 export default function SideMenu(){
     const {
-        isAttack,
-        changeSide, 
         isDrawing, setIsDrawing, 
         isErasingMode, setIsErasingMode, 
         canvas,
@@ -16,9 +14,7 @@ export default function SideMenu(){
         setStepDeletedObjects,
         currentStep
     } = useAppStore(state=>state)
-    const handleChangeSide = () => {
-        changeSide()
-    }
+    
     const handleIsDrawingSwitch = () => {
         setIsErasingMode(false)
         setIsDrawing(!isDrawing)
@@ -36,32 +32,38 @@ export default function SideMenu(){
         setBrushColor(color);
     }
     const sequence = [...Array(11).keys()].slice(1).map((value) => <StepButton key={value} value={value}/>)
-    const colorBlocks = colorPalette.map((value, index) => <button key={index+value} onClick={()=>{handleChangeBrushColor(value)}} className={`bg-[${value}] w-10 h-10`}></button>)
+    const colorBlocks = ['bg-red-600', 'bg-white', 'bg-black', 'bg-yellow-400'].map((value, index) => <button key={index+value} onClick={()=>handleChangeBrushColor(value)} className={`${value} rounded-md w-5 h-5`}></button>)
     return(
-        <div className="flex flex-col my-3">
+        <div className="flex flex-col my-4 gap-5">
             <div className="flex flex-row basis-1/6">
                 <div className="basis-5/6">
                     <MapMenu/>
                 </div>
-                <button className="w-1/4 rounded-md bg-slate-500" onClick={handleChangeSide}>{isAttack? "攻" : "守"}</button>
             </div>
-            <div className="my-3">
+            <div>
                 <div>序列</div>
                 <div className="grid grid-cols-5 my-2">{sequence}</div>
             </div>
-            <div className="my-2 w-full">
-                <div>删除</div>
-                <button className="w-full" onClick={handleDeleteEverything}>所有</button>
+            <div className="flex flex-col gap-2">
+                <div className="w-full">删除</div>
+                <button className="w-full h-10 bg-cyan-900 rounded-md" onClick={handleDeleteEverything}>所有</button>
                 <button className="w-full">序列第{currentStep}步</button>
             </div>
-            <div>
+            <div className="w-full pb-2 flex flex-col gap-2">
                 <div>工具</div>
-                <div className="grid grid-cols-4">
+                <div className="flex flex-row gap-2">
                     <button onClick={handleIsDrawingSwitch}>Pen</button>
                     <button onClick={handleIsErasingModeSwitch}>Eraser</button>
                 </div>
-                <div>
-                    {(isDrawing || isErasingMode) && <div className="">{colorBlocks}</div>}
+                <div className="flex flex-col gap-2">
+                    {(isDrawing || isDrawing) && 
+                        <div className="flex flex-row gap-5">
+                            <p className="text-sm">颜色</p>
+                            <div className="flex flex-row gap-2">
+                                {colorBlocks}
+                            </div>
+                        </div>
+                    }
                     {(isDrawing || isErasingMode) && <SizeSlider />}
                 </div>
             </div>

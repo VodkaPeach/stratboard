@@ -12,6 +12,20 @@ export const svgPaths: string[] = [
     'Sunset_minimap',
 ];
 
+export const dictionary = {
+    'Abyss_minimap': "幽邃地窟",
+    'Ascent_minimap': "亚海悬城",
+    'Bind_minimap': "源工重镇",
+    'Breeze': "微风岛屿",
+    'Fracture': "裂变峡谷",
+    'Haven_minimap': "隐世修所",
+    'Icebox': "森寒冬港",
+    'Lotus': "莲华古城",
+    'Pearl_minimap': "深海明珠",
+    'Split_minimap': "霓虹町",
+    'Sunset_minimap': "日落之城",
+};
+
 export const agents: string[] = [
     "Astra",
     "Breach",
@@ -97,8 +111,8 @@ export const abilityProps = {
 }
 
 export const colorPalette = [
-    "#fa0202",
-    "#ffffff",
+    "red",
+    "#FFFFFF",
     "#000000",
-    "#fcff40",
+    "yellow",
 ]

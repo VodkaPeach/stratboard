@@ -8,7 +8,7 @@ export default function SizeSlider () {
             <Slider 
                 size="sm"
                 step={1}
-                label="Thickness"
+                label="粗细"
                 color="foreground"
                 showSteps={true} 
                 maxValue={5} 
