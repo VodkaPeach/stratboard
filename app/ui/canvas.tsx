@@ -9,7 +9,7 @@ const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
     currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc, setIsDrawing, SwitchIsAlly,
     isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting,
-    brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects, 
+    brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,lockScalingY
     } = useAppStore((state)=>state)
     const [hoveredObject, setHoveredObject] = useState<fabric.Object | null>(null)
     const [dragTarget, setDragTarget] = useState<fabric.Object | null>(null);
@@ -165,9 +165,9 @@ const Canvas = () => {
           backgroundColor: iconBgColor
           });
           img.lockScalingX=true
-          img.lockScalingY=true
+          img.lockScalingY=lockScalingY
           img.lockRotation=lockRotation
-          img.hasControls=!lockRotation
+          img.hasControls= !lockScalingY || !lockRotation
           canvas?.add(img);
           stepState[currentStep-1].push(img)
           canvas?.renderAll();
@@ -175,7 +175,7 @@ const Canvas = () => {
       });
       }
        
-    }, [draggableSrc])
+    }, [draggableSrc, lockRotation, lockScalingY])
 
     useEffect(()=>{
         canvas?.on("mouse:over", (e)=>{

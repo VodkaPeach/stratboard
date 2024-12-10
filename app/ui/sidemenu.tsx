@@ -46,8 +46,8 @@ export default function SideMenu(){
             </div>
             <div className="flex flex-col gap-2">
                 <div className="w-full">删除</div>
-                <button className="w-full h-10 bg-cyan-900 rounded-md" onClick={handleDeleteEverything}>所有</button>
-                <button className="w-full">序列第{currentStep}步</button>
+                <button className="w-full h-10 bg-cyan-900 hover:bg-cyan-800 rounded-md" onClick={handleDeleteEverything}>所有</button>
+                <button className="w-full h-10 bg-slate-700 hover:bg-slate-600 rounded-md">序列第{currentStep}步</button>
             </div>
             <div className="w-full pb-2 flex flex-col gap-2">
                 <div>工具</div>

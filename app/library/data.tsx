@@ -83,8 +83,8 @@ export const abilityAlts = {
 }
 
 export const abilityProps = {
-    "Astra": ["N", "N", "N", "N"],
-    "Breach": ["N", "N", "N", "N"],
+    "Astra": ["N", "N", "R", "N"],
+    "Breach": ["N", "N", "S", "N"],
     "Brimstone": ["N", "N", "N", "N"],
     "Chamber": ["N", "N", "N", "N"],
     "Clove": ["N", "N", "N", "N"],

@@ -8,16 +8,22 @@ type skillComponentProps = {
     index: number,
 }
 const Ability: React.FC<skillComponentProps> = ( {agent, skill, index} ) => {
-    const {setDragZoomLevel, setLockRotation} = useAppStore(state=>state);
+    const {setDragZoomLevel, setLockRotation, setlockScalingY} = useAppStore(state=>state);
 
     const handleAbilityDragStart = (event:React.DragEvent<HTMLImageElement>, agent: string, skill: string, index: number) => {
         setDragZoomLevel(0.1);
         switch (abilityProps[agent as keyof {}][index]) {
-            case "R":
+            case "S":
                 setLockRotation(false);
+                setlockScalingY(false);
+                break;
+            case "R":
+                setLockRotation(true);
+                setlockScalingY(true)
                 break;
             default:
-                setLockRotation(false);
+                setLockRotation(true);
+                setlockScalingY(true);
         }
         let abilitySrc = `/ability/${agent}/${skill}.webp`
         if (abilityAlts[agent as keyof {}][index] != "N"){

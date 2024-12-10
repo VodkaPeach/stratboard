@@ -15,6 +15,7 @@ export type AppState = {
   dragZoomLevel: number
   isAlly: boolean
   lockRotation: boolean
+  lockScalingY: boolean
   isDeleting: boolean
   brushColor: string
   brushWidth: number | number[]
@@ -38,6 +39,7 @@ export type AppActions = {
   setDragZoomLevel: (newZoomLevel: number) => void
   SwitchIsAlly: () => void
   setLockRotation: (newLock: boolean) => void
+  setlockScalingY: (scaleY: boolean) => void
   setIsDeleting: (newIsDelete: boolean) => void
   setBrushColor: (newBrushColor: string) => void
   setBrushWidth: (newBrushWidth: number | number[]) => void
@@ -62,7 +64,8 @@ export const initAppStore = ():AppState=>{
         currentStep: 0,
         stepState: [[],[],[],[],[],[],[],[],[],[]],
         stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
-        hoveredObject: null
+        hoveredObject: null,
+        lockScalingY: true
     }
 }
 
@@ -86,7 +89,8 @@ export const defaultInitState: AppState = {
     currentStep: 0, 
     stepState: [[],[],[],[],[],[],[],[],[],[]],
     stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
-    hoveredObject: null
+    hoveredObject: null,
+    lockScalingY: true
 }
 
 export const createAppStore = (
@@ -113,6 +117,7 @@ export const createAppStore = (
     setCurrentStep: (step) => set(()=>({currentStep: step})),
     setStepState: (newStepState) => set(()=>({stepState: newStepState})),
     setStepDeletedObjects: (newStepState) => set(()=>({stepState: newStepState})),
-    setHoveredObject: (target) => set(()=>({hoveredObject: target}))
+    setHoveredObject: (target) => set(()=>({hoveredObject: target})),
+    setlockScalingY: (scaleY) => set(()=>({lockScalingY: scaleY}))
   }))
 }
