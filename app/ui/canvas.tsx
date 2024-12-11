@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import {fabric} from 'fabric';
 import { useAppStore } from '@/app/providers/app-store-provider';
 import { svgPaths } from '@/app/library/data';
-import { skip } from 'node:test';
 
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 

@@ -52,7 +52,7 @@ export type AppActions = {
 export type AppStore = AppState & AppActions
 
 export const initAppStore = ():AppState=>{
-  return {map: "Abyss_minimap", canvas: null, isAttack: true, svgMaps: null, 
+  return {map: "Abyss", canvas: null, isAttack: true, svgMaps: null, 
         currentMapObject: null, draggableSrc: null, 
         isDrawing:false,isErasing:false, isErasingMode:false, 
         currentHoverAgent: null, 
@@ -70,7 +70,7 @@ export const initAppStore = ():AppState=>{
 }
 
 export const defaultInitState: AppState = {
-    map: "Abyss_minimap",
+    map: "Abyss",
     canvas: null,
     isAttack: true,
     svgMaps: null,

@@ -28,7 +28,7 @@ const Ability: React.FC<skillComponentProps> = ( {agent, skill, index} ) => {
         let abilitySrc = `/ability/${agent}/${skill}.webp`
         if (abilityAlts[agent as keyof {}][index] != "N"){
             abilitySrc = abilityAlts[agent as keyof {}][index]
-            setDragZoomLevel(0.24)
+            setDragZoomLevel(0.4)
         }
         event.dataTransfer?.setData('text/plain', abilitySrc)
     }
