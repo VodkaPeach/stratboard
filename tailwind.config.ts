@@ -24,17 +24,17 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage:{
-        'Abyss': 'url(/map_bg/Abyss.webp)',
-        'Ascent': 'url(/map_bg/Ascent.webp)',
-        'Bind': 'url(/map_bg/Bind.webp)',
-        'Fracture': 'url(/map_bg/Fracture.webp)',
-        'Lotus': 'url(/map_bg/Lotus.webp)',
-        'Split': 'url(/map_bg/Split.webp)',
-        'Sunset': 'url(/map_bg/Sunset.webp)',
-        'Pearl': 'url(/map_bg/Pearl.webp)',
-        'Haven': 'url(/map_bg/Haven.webp)',
-        'Icebox': 'url(/map_bg/Icebox.webp)',
-        'Breeze': 'url(/map_bg/Breeze.webp)',
+        'Abyss': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Abyss.webp)',
+        'Ascent': 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/map_bg/Ascent.webp)',
+        'Bind': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Bind.webp)',
+        'Fracture': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Fracture.webp)',
+        'Lotus': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Lotus.webp)',
+        'Split': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Split.webp)',
+        'Sunset': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Sunset.webp)',
+        'Pearl': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Pearl.webp)',
+        'Haven': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Haven.webp)',
+        'Icebox': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Icebox.webp)',
+        'Breeze': 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(/map_bg/Breeze.webp)',
       },
       colors: {
         background: "var(--background)",

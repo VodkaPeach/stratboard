@@ -7,7 +7,7 @@ import { dictionary } from "@/app/library/data";
 
 export default function MapMenu() {
     const {map, changeMap, isAttack, changeSide} = useAppStore(store=>store)
-    let itemList =svgPaths.filter((value)=>value!=map).map((value) => <button className={` bg-${value} bg-center hover:bg-slate-600 w-full h-16 rounded-md`} key={value} onClick={()=>updateMap(value)}>{dictionary[value as keyof object]}</button>)
+    let itemList =svgPaths.filter((value)=>value!=map).map((value) => <button className={`bg-${value} font-bold text-3xl bg-center brightness-90 hover:brightness-105 w-full h-16 rounded-md`} key={value} onClick={()=>updateMap(value)}>{dictionary[value as keyof object]}</button>)
     const [toggled, setToggled] = useState(false)
 
     const handleToggleMenu = () => {
@@ -26,7 +26,7 @@ export default function MapMenu() {
     return(
         <div className="flex flex-col gap-1">
             <div className="flex flex-row gap-2">
-                <button onClick={handleToggleMenu} className={`w-48 bg-${map} bg-center rounded-md h-16 bg-slate-800 hover:bg-slate-600`}>
+                <button onClick={handleToggleMenu} className={`w-48 bg-${map} font-bold text-3xl bg-center rounded-md h-16 brightness-90 hover:brightness-105`}>
                     {dictionary[map as keyof object]}
                 </button>
                 <button className="w-1/4 rounded-md bg-slate-800 hover:bg-slate-600 px-5" onClick={handleChangeSide}>

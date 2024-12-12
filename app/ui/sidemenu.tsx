@@ -36,7 +36,7 @@ export default function SideMenu(){
     return(
         <div className="flex flex-col my-4 gap-5">
             <div className="flex flex-row basis-1/6">
-                <div className="basis-5/6">
+                <div className="basis-5/6 tracking-widest">
                     <MapMenu/>
                 </div>
             </div>
