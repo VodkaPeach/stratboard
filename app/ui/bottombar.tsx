@@ -52,7 +52,7 @@ export default function BottomBar(){
                 onChange={handleAllySwitch}
             />
           </div>
-          <p className="w-32 text-center py-8">{isAlly? '友方' : '敌方'} </p>
+          <p className="w-48 text-center py-8">{isAlly? '友方' : '敌方'} </p>
           <div className="flex my-0.5 pl-12 gap-1 py-1">{agentIconArray}</div>
         </div>
     )

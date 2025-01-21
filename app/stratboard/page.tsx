@@ -12,8 +12,23 @@ export default function StratBoard () {
         setCurrentHoverAgent(null)
     }
     useEffect(()=>{
+        let isControlDown = false
         const handleKeydown = (e: KeyboardEvent) =>{
+            console.log(e.key)
             switch(e.key){
+                case "Control":
+                    isControlDown = true;
+                    break;
+                case "z":
+                    if(isControlDown){
+                        console.log("undo")
+                    };
+                    break;
+                case "y":
+                    if(isControlDown){
+                        console.log("redo")
+                    };
+                    break;
                 case "e":
                     setIsDeleting(true)
                     break;
@@ -33,6 +48,9 @@ export default function StratBoard () {
         }
         const handleKeyUp = (e: KeyboardEvent) =>{
             switch(e.key){
+                case "Control":
+                    isControlDown = false;
+                    break;
                 case "e":
                     setIsDeleting(false)
                     break;

@@ -1,6 +1,9 @@
 "use client"
 import { useAppStore } from "../providers/app-store-provider"
 import { useFloating, offset, autoUpdate } from "@floating-ui/react"
+import Image from "next/image"
+//import BIN from 'public/next.svg'
+
 const RightPanel = () => {
     const {setIsDeleting} = useAppStore(state=>state)
     const {refs, floatingStyles} = useFloating({
@@ -22,11 +25,11 @@ const RightPanel = () => {
             <div
                 ref={refs.setFloating}
                 style={floatingStyles}
-                className="bg-orange-700 w-16 h-16"
+                className="place-content-center  border-3 border-dashed rounded-md border-red-800 w-16 h-16"
                 onMouseEnter={handleDeleteOn}
                 onMouseLeave={handleDeleteOff}
             >
-                text
+                <Image className="place-self-center" src={'/trashbin.svg'} width={40} height={40} alt="BIN"/>
             </div>
         </div>
     )
