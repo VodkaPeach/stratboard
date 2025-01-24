@@ -273,7 +273,7 @@ const Canvas = () => {
             canvas.on('mouse:move', function(this: any, opt) {
               if (isErasing) {
                 const erasingTarget = opt.target;
-                if ( erasingTarget?.isType("path") ){
+                if (erasingTarget?.isType("path") ){
                     removeObjectFromStepsForward(erasingTarget)
                     canvas.remove(erasingTarget);
                     canvas.renderAll();

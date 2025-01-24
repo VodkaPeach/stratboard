@@ -88,7 +88,7 @@ export const abilityProps = {
     "Brimstone": ["N", "N", "N", "N"],
     "Chamber": ["N", "N", "N", "N"],
     "Clove": ["N", "N", "N", "N"],
-    "Cypher": ["N", "N", "N", "N"],
+    "Cypher": ["S", "N", "N", "N"],
     "Deadlock": ["N", "N", "N", "N"],
     "Fade": ["N", "N", "N", "N"],
     "Gekko": ["N", "N", "N", "N"],
