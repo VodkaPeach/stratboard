@@ -7,7 +7,7 @@ import { svgPaths } from '@/app/library/data';
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
     currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc, setIsDrawing, SwitchIsAlly,
-    isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting,
+    isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting, draggableType,
     brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,lockScalingY
     } = useAppStore((state)=>state)
     const [hoveredObject, setHoveredObject] = useState<fabric.Object | null>(null)
@@ -65,6 +65,17 @@ const Canvas = () => {
     
             fabricCanvas.backgroundColor = 'black';
             fabric.Object.prototype.selectable = false;
+            fabric.Image.prototype._controlsVisibility = {
+              bl: false,
+              br: false,
+              mb: false,
+              ml: false,
+              mr: false,
+              mt: false,
+              tl: false,
+              tr: false,
+              mtr: false,
+          };
 
             fabricCanvas.freeDrawingBrush = new fabric.PencilBrush(fabricCanvas);
 
@@ -117,17 +128,7 @@ const Canvas = () => {
       }
     },[isDrawing])
 
-    // drag and drop icon
-    let iconBgColor = ""
-    if (isAlly) {
-        iconBgColor = '#42ffec'
-    }
-    else {
-        iconBgColor = "#ff4242"
-    }
-    if (dragZoomLevel != 0.05) {
-        iconBgColor = ""
-    }
+    
 
     // initial load step
     useEffect(()=>{
@@ -151,18 +152,42 @@ const Canvas = () => {
 
     useEffect(()=>{
       console.log("drag drop icon useEffect")
+      // drag and drop icon
       if (draggableSrc){
         fabric.Image.fromURL(draggableSrc, (img) => {
-          img.scale(dragZoomLevel)
+          // shared properties among all draggable types:
           img.set({
-          left: iconDropPos["x"],
-          hasBorders: false,
-          top: iconDropPos["y"],
-          originX: 'center',
-          originY: 'center',
-          selectable: true,
-          backgroundColor: iconBgColor
+            left: iconDropPos["x"],
+            hasBorders: false,
+            top: iconDropPos["y"],
+            originX: 'center',
+            originY: 'center',
+            selectable: true,
           });
+          // each type's unique properties:
+          switch(draggableType){
+            case "AgentIcon":
+              img.scale(0.05);
+              if (isAlly) {
+                img.backgroundColor = '#42ffec';
+              }
+              else {
+                img.backgroundColor = "#ff4242";
+              }
+              img.hasControls = false;
+              break;
+            case "UtilIconDefault":
+              img.scale(0.03);
+              img.hasControls = false;
+              break;
+            case "UtilIconCustom":
+              img.scale(0.4);
+              img.setControlsVisibility({mtr: true, mb: true});
+              canvas?.setActiveObject(img)
+              break;
+            default:
+          }
+          
           img.lockScalingX=true
           img.lockScalingY=lockScalingY
           img.lockRotation=lockRotation

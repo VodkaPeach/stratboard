@@ -23,6 +23,7 @@ export type AppState = {
   stepState: fabric.Object[][]
   stepDeletedObjects: fabric.Object[][]
   hoveredObject: fabric.Object | null
+  draggableType: string | null
 }
 
 export type AppActions = {
@@ -47,6 +48,7 @@ export type AppActions = {
   setStepState: (newStepState: fabric.Object[][]) => void
   setStepDeletedObjects: (newObjects: fabric.Object[][]) => void
   setHoveredObject: (target: fabric.Object | null) => void
+  setDraggableType: (newType: string | null) => void
 }
 
 export type AppStore = AppState & AppActions
@@ -65,7 +67,8 @@ export const initAppStore = ():AppState=>{
         stepState: [[],[],[],[],[],[],[],[],[],[]],
         stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
         hoveredObject: null,
-        lockScalingY: true
+        lockScalingY: true,
+        draggableType: null
     }
 }
 
@@ -90,7 +93,8 @@ export const defaultInitState: AppState = {
     stepState: [[],[],[],[],[],[],[],[],[],[]],
     stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
     hoveredObject: null,
-    lockScalingY: true
+    lockScalingY: true,
+    draggableType: null,
 }
 
 export const createAppStore = (
@@ -118,6 +122,7 @@ export const createAppStore = (
     setStepState: (newStepState) => set(()=>({stepState: newStepState})),
     setStepDeletedObjects: (newStepState) => set(()=>({stepState: newStepState})),
     setHoveredObject: (target) => set(()=>({hoveredObject: target})),
-    setlockScalingY: (scaleY) => set(()=>({lockScalingY: scaleY}))
+    setlockScalingY: (scaleY) => set(()=>({lockScalingY: scaleY})),
+    setDraggableType: (newDraggableType) => set(()=>({draggableType: newDraggableType}))
   }))
 }
