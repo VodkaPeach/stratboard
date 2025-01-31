@@ -9,7 +9,7 @@ type MyComponentProps = {
     agent: string | null;
 };
 const Draggable: React.FC<MyComponentProps> = ( {agent}) => {
-    const {currentHoverAgent, setCurrentHoverAgent, setDragZoomLevel, setLockRotation, setlockScalingY, setDraggableType} = useAppStore(state=>state);
+    const {currentHoverAgent, setCurrentHoverAgent, setDragZoomLevel, setDraggableType} = useAppStore(state=>state);
     const [isPop, setIsPop] = useState(false)
     const {refs, floatingStyles, context} = useFloating({
         open: isPop,
@@ -24,13 +24,11 @@ const Draggable: React.FC<MyComponentProps> = ( {agent}) => {
     const hover = useHover(context, {
         enabled: agent==currentHoverAgent,
     });
-    const {getReferenceProps, getFloatingProps} = useInteractions([
+    const {getFloatingProps} = useInteractions([
         hover,
       ]);
 
     const handleAgentDragStart = (event:React.DragEvent<HTMLImageElement>, src: string) => {
-        setLockRotation(true);
-        setlockScalingY(true)
         setDragZoomLevel(0.05)
         setDraggableType("AgentIcon")
         event.dataTransfer?.setData('text/plain', src)

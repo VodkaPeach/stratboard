@@ -7,8 +7,8 @@ import { svgPaths } from '@/app/library/data';
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
     currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc, setIsDrawing, SwitchIsAlly,
-    isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, lockRotation, isDeleting, draggableType,
-    brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,lockScalingY
+    isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, isDeleting, draggableType,
+    brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,abilityProp
     } = useAppStore((state)=>state)
     const [hoveredObject, setHoveredObject] = useState<fabric.Object | null>(null)
     const [dragTarget, setDragTarget] = useState<fabric.Object | null>(null);
@@ -150,6 +150,8 @@ const Canvas = () => {
         }
     }, [currentStep])
 
+    const lastGoodPos = useRef<{left: number | undefined, top: number | undefined}>({left: 100, top:100})
+
     useEffect(()=>{
       console.log("drag drop icon useEffect")
       // drag and drop icon
@@ -182,16 +184,24 @@ const Canvas = () => {
               break;
             case "UtilIconCustom":
               img.scale(0.4);
-              img.setControlsVisibility({mtr: true, mb: true});
-              canvas?.setActiveObject(img)
+              img.lockScalingFlip = true;
+              img.minScaleLimit = 0.4
+              img.on("scaling", ()=>{
+                if(img.scaleY! <= 1){
+                  lastGoodPos.current = {left: img.left, top: img.top}
+                }
+                console.log(lastGoodPos.current)
+                if(img.scaleY! > 1){
+                  img.scaleY = 1
+                  img.left = lastGoodPos.current.left
+                  img.top = lastGoodPos.current.top
+                }
+              })
+              img.setControlsVisibility({mtr: abilityProp=="R" || abilityProp=="B", mt: abilityProp=="B"});
+              canvas?.setActiveObject(img);
               break;
             default:
           }
-          
-          img.lockScalingX=true
-          img.lockScalingY=lockScalingY
-          img.lockRotation=lockRotation
-          img.hasControls= !lockScalingY || !lockRotation
           canvas?.add(img);
           stepState[currentStep-1].push(img)
           canvas?.renderAll();
@@ -199,7 +209,7 @@ const Canvas = () => {
       });
       }
        
-    }, [draggableSrc, lockRotation, lockScalingY])
+    }, [draggableSrc, abilityProp])
 
     useEffect(()=>{
         canvas?.on("mouse:over", (e)=>{

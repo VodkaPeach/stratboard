@@ -14,8 +14,6 @@ export type AppState = {
   currentHoverAgent: string | null
   dragZoomLevel: number
   isAlly: boolean
-  lockRotation: boolean
-  lockScalingY: boolean
   isDeleting: boolean
   brushColor: string
   brushWidth: number | number[]
@@ -24,6 +22,7 @@ export type AppState = {
   stepDeletedObjects: fabric.Object[][]
   hoveredObject: fabric.Object | null
   draggableType: string | null
+  abilityProp: string
 }
 
 export type AppActions = {
@@ -39,8 +38,6 @@ export type AppActions = {
   setCurrentHoverAgent: (newHover: string | null) => void
   setDragZoomLevel: (newZoomLevel: number) => void
   SwitchIsAlly: () => void
-  setLockRotation: (newLock: boolean) => void
-  setlockScalingY: (scaleY: boolean) => void
   setIsDeleting: (newIsDelete: boolean) => void
   setBrushColor: (newBrushColor: string) => void
   setBrushWidth: (newBrushWidth: number | number[]) => void
@@ -49,6 +46,7 @@ export type AppActions = {
   setStepDeletedObjects: (newObjects: fabric.Object[][]) => void
   setHoveredObject: (target: fabric.Object | null) => void
   setDraggableType: (newType: string | null) => void
+  setAbilityProp: (prop: string) => void
 }
 
 export type AppStore = AppState & AppActions
@@ -59,7 +57,6 @@ export const initAppStore = ():AppState=>{
         isDrawing:false,isErasing:false, isErasingMode:false, 
         currentHoverAgent: null, 
         dragZoomLevel: 1, isAlly: true,
-        lockRotation: true,
         isDeleting: false,
         brushColor: "black",
         brushWidth: 2,
@@ -67,8 +64,8 @@ export const initAppStore = ():AppState=>{
         stepState: [[],[],[],[],[],[],[],[],[],[]],
         stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
         hoveredObject: null,
-        lockScalingY: true,
-        draggableType: null
+        draggableType: null,
+        abilityProp: "N",
     }
 }
 
@@ -85,7 +82,6 @@ export const defaultInitState: AppState = {
     currentHoverAgent: null,
     dragZoomLevel: 1,
     isAlly: true,
-    lockRotation: true,
     isDeleting: false,
     brushColor: "black",
     brushWidth: 2,
@@ -93,8 +89,8 @@ export const defaultInitState: AppState = {
     stepState: [[],[],[],[],[],[],[],[],[],[]],
     stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
     hoveredObject: null,
-    lockScalingY: true,
     draggableType: null,
+    abilityProp: "N"
 }
 
 export const createAppStore = (
@@ -114,7 +110,6 @@ export const createAppStore = (
     setCurrentHoverAgent: (newHover) => set(()=>({currentHoverAgent: newHover})),
     setDragZoomLevel: (newZoomLevel) => set(()=>({dragZoomLevel: newZoomLevel})),
     SwitchIsAlly: () => set((state) => ({isAlly: !state.isAlly})),
-    setLockRotation: (newLock) => set((state)=>({lockRotation: newLock})),
     setIsDeleting: (newIsDelete) => set(()=>({isDeleting: newIsDelete})),
     setBrushColor: (newColor) => set(() => ({brushColor: newColor})),
     setBrushWidth: (newWidth) =>set(() => ({brushWidth: newWidth})),
@@ -122,7 +117,7 @@ export const createAppStore = (
     setStepState: (newStepState) => set(()=>({stepState: newStepState})),
     setStepDeletedObjects: (newStepState) => set(()=>({stepState: newStepState})),
     setHoveredObject: (target) => set(()=>({hoveredObject: target})),
-    setlockScalingY: (scaleY) => set(()=>({lockScalingY: scaleY})),
-    setDraggableType: (newDraggableType) => set(()=>({draggableType: newDraggableType}))
+    setDraggableType: (newDraggableType) => set(()=>({draggableType: newDraggableType})),
+    setAbilityProp: (prop) => set(()=>({abilityProp: prop})),
   }))
 }
