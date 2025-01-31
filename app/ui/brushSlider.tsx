@@ -1,7 +1,7 @@
 "use client"
 import { useAppStore } from "@/app/providers/app-store-provider"
 import { Slider } from "@nextui-org/slider"
-export default function SizeSlider () {
+export default function BrushSizeSlider () {
     const {brushWidth, setBrushWidth} = useAppStore(state=>state)
     return (
         <div>

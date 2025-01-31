@@ -23,6 +23,7 @@ export type AppState = {
   hoveredObject: fabric.Object | null
   draggableType: string | null
   abilityProp: string
+  iconScale: number | number[]
 }
 
 export type AppActions = {
@@ -47,6 +48,7 @@ export type AppActions = {
   setHoveredObject: (target: fabric.Object | null) => void
   setDraggableType: (newType: string | null) => void
   setAbilityProp: (prop: string) => void
+  setIconScale: (scale: number | number[]) => void
 }
 
 export type AppStore = AppState & AppActions
@@ -66,6 +68,7 @@ export const initAppStore = ():AppState=>{
         hoveredObject: null,
         draggableType: null,
         abilityProp: "N",
+        iconScale: 5,
     }
 }
 
@@ -90,7 +93,8 @@ export const defaultInitState: AppState = {
     stepDeletedObjects: [[],[],[],[],[],[],[],[],[],[]],
     hoveredObject: null,
     draggableType: null,
-    abilityProp: "N"
+    abilityProp: "N",
+    iconScale: 5,
 }
 
 export const createAppStore = (
@@ -119,5 +123,6 @@ export const createAppStore = (
     setHoveredObject: (target) => set(()=>({hoveredObject: target})),
     setDraggableType: (newDraggableType) => set(()=>({draggableType: newDraggableType})),
     setAbilityProp: (prop) => set(()=>({abilityProp: prop})),
+    setIconScale: (scale) => set(()=>({iconScale: scale}))
   }))
 }

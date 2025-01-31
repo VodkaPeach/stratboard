@@ -1,6 +1,6 @@
 'use client'
 import MapMenu from "./dropdown"
-import SizeSlider from "./slider"
+import BrushSizeSlider from "./brushSlider"
 import { useAppStore } from "@/app/providers/app-store-provider"
 import StepButton from "./stepButton"
 import Image from "next/image"
@@ -81,7 +81,7 @@ export default function SideMenu(){
                             </div>
                         </div>
                     }
-                    {(isDrawing || isErasingMode) && <SizeSlider />}
+                    {(isDrawing || isErasingMode) && <BrushSizeSlider />}
                 </div>
             </div>
         </div>

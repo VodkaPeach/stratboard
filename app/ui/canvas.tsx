@@ -8,7 +8,7 @@ const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
     currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc, setIsDrawing, SwitchIsAlly,
     isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, isDeleting, draggableType,
-    brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,abilityProp
+    brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,abilityProp, iconScale
     } = useAppStore((state)=>state)
     const [hoveredObject, setHoveredObject] = useState<fabric.Object | null>(null)
     const [dragTarget, setDragTarget] = useState<fabric.Object | null>(null);
@@ -169,7 +169,7 @@ const Canvas = () => {
           // each type's unique properties:
           switch(draggableType){
             case "AgentIcon":
-              img.scale(0.05);
+              img.scale(iconScale as number *0.01);
               if (isAlly) {
                 img.backgroundColor = '#42ffec';
               }
@@ -209,7 +209,7 @@ const Canvas = () => {
       });
       }
        
-    }, [draggableSrc, abilityProp])
+    }, [draggableSrc, abilityProp, iconScale])
 
     useEffect(()=>{
         canvas?.on("mouse:over", (e)=>{

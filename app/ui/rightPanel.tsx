@@ -2,6 +2,7 @@
 import { useAppStore } from "../providers/app-store-provider"
 import { useFloating, offset, autoUpdate } from "@floating-ui/react"
 import Image from "next/image"
+import IconSizeSlider from "./iconSizeSlider"
 //import BIN from 'public/next.svg'
 
 const RightPanel = () => {
@@ -19,8 +20,11 @@ const RightPanel = () => {
     }
     return (
         <div className="w-72 my-2" >
-            <div ref={refs.setReference}>
+            <div className="p-2" ref={refs.setReference}>
                 b站@六時の雨
+            </div>
+            <div className="w-5/6 px-3 py-5">
+                <IconSizeSlider />
             </div>
             <div
                 ref={refs.setFloating}

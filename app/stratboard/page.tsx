@@ -7,7 +7,7 @@ import { useAppStore } from "../providers/app-store-provider";
 import RightPanel from "../ui/rightPanel";
 import { useEffect } from "react";
 export default function StratBoard () {
-    const {setCurrentHoverAgent, isDrawing, setIsDrawing, isErasingMode, setIsErasingMode, setIsDeleting, setIsErasing, SwitchIsAlly } = useAppStore(state=>state)
+    const {setCurrentHoverAgent, isDrawing, setIsDrawing, isErasingMode, setIsErasingMode, setIsDeleting, SwitchIsAlly } = useAppStore(state=>state)
     const handleResetHover = () => {
         setCurrentHoverAgent(null)
     }
