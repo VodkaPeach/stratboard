@@ -4,19 +4,54 @@ import { Slider } from "@nextui-org/slider"
 export default function IconSizeSlider () {
     const {iconScale, setIconScale} = useAppStore(state=>state)
     return (
+        
         <div>
             <Slider 
                 size="sm"
                 step={1}
                 label="英雄图标尺寸"
                 color="foreground"
-                showSteps={true} 
+                showSteps={true}
+                marks={[
+                    {
+                      value: 2,
+                      label: "小",
+                    },
+                    {
+                      value: 3,
+                      label: "中",
+                    },
+                    {
+                      value: 4,
+                      label: "大",
+                    },
+                  ]} 
                 maxValue={4} 
                 minValue={2}
-                value={iconScale}
+                hideValue={true}
                 onChange={setIconScale} 
                 defaultValue={3}
             />
         </div>
+        /*
+        <div>
+            <div className="w-full pb-3">
+                英雄图标尺寸
+            </div>
+            <div className="gap-3 flex flex-row">
+                <button className="bg-teal-600 rounded-md ">
+                    小
+                </button >
+                <button className="bg-teal-600 rounded-md ">
+                    中
+                </button>
+                <button className="bg-teal-600 rounded-md ">
+                    大
+                </button>
+            </div>
+            
+        </div>*/
+
+        
     )
 }

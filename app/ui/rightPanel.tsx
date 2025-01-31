@@ -6,14 +6,16 @@ import IconSizeSlider from "./iconSizeSlider"
 //import BIN from 'public/next.svg'
 
 const RightPanel = () => {
-    const {setIsDeleting} = useAppStore(state=>state)
+    const {setIsDeleting, canvas} = useAppStore(state=>state)
     const {refs, floatingStyles} = useFloating({
         middleware: [offset(10)],
         whileElementsMounted: autoUpdate,
         placement: 'left-start',
     });
     const handleDeleteOn = () => {
-        setIsDeleting(true)
+        canvas?.on("mouse:up", ()=>{
+            setIsDeleting(true)
+        })
     }
     const handleDeleteOff = () => {
         setIsDeleting(false)

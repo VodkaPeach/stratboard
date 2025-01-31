@@ -213,8 +213,8 @@ const Canvas = () => {
 
     useEffect(()=>{
         canvas?.on("mouse:over", (e)=>{
-            if (e.target?.isType("image")){
-                console.log(e.target)
+            if (e.target?.isType("image") || e.target?.isType('i-text')){
+                console.log(e.target, "is hovered")
                 setHoveredObject(e.target)
             }
         })
