@@ -2,8 +2,9 @@
 import MapMenu from "./dropdown"
 import SizeSlider from "./slider"
 import { useAppStore } from "@/app/providers/app-store-provider"
-import { colorPalette } from "../library/data"
 import StepButton from "./stepButton"
+import Image from "next/image"
+import clsx from "clsx"
 export default function SideMenu(){
     const {
         isDrawing, setIsDrawing, 
@@ -52,8 +53,24 @@ export default function SideMenu(){
             <div className="w-full pb-2 flex flex-col gap-2">
                 <div>工具</div>
                 <div className="flex flex-row gap-2">
-                    <button onClick={handleIsDrawingSwitch}>Pen</button>
-                    <button onClick={handleIsErasingModeSwitch}>Eraser</button>
+                    <button className={clsx(
+                        "bg-teal-600 rounded-md hover:bg-teal-400",
+                        {
+                            'bg-teal-200': isDrawing
+                        }
+
+                    )} onClick={handleIsDrawingSwitch}>
+                        <Image className="place-self-center" src={'/pen.svg'} width={40} height={40} alt="PEN"/>
+                    </button>
+                    <button className={clsx(
+                        "bg-teal-600 rounded-md hover:bg-teal-400",
+                        {
+                            'bg-teal-200': isErasingMode
+                        }
+
+                    )} onClick={handleIsErasingModeSwitch}>
+                        <Image className="place-self-center" src={'/eraser.svg'} width={40} height={40} alt="Eraser tool"/>
+                    </button>
                 </div>
                 <div className="flex flex-col gap-2">
                     {(isDrawing || isDrawing) && 

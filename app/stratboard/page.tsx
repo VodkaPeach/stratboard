@@ -7,9 +7,17 @@ import { useAppStore } from "../providers/app-store-provider";
 import RightPanel from "../ui/rightPanel";
 import { useEffect } from "react";
 export default function StratBoard () {
-    const {setCurrentHoverAgent, isDrawing, setIsDrawing, isErasing, setIsDeleting, setIsErasing, SwitchIsAlly } = useAppStore(state=>state)
+    const {setCurrentHoverAgent, isDrawing, setIsDrawing, isErasingMode, setIsErasingMode, setIsDeleting, setIsErasing, SwitchIsAlly } = useAppStore(state=>state)
     const handleResetHover = () => {
         setCurrentHoverAgent(null)
+    }
+    const handleIsDrawingSwitch = () => {
+        setIsErasingMode(false)
+        setIsDrawing(!isDrawing)
+    }
+    const handleIsErasingModeSwitch = () => {
+        setIsDrawing(false)
+        setIsErasingMode(!isErasingMode)
     }
     useEffect(()=>{
         let isControlDown = false
@@ -33,12 +41,10 @@ export default function StratBoard () {
                     setIsDeleting(true)
                     break;
                 case "q":
-                    setIsErasing(false)
-                    setIsDrawing(!isDrawing)
+                    handleIsDrawingSwitch()
                     break;
                 case "w":
-                    setIsDrawing(false);
-                    setIsErasing(!isErasing)
+                    handleIsErasingModeSwitch();
                     break;
                 case "r":
                     SwitchIsAlly();
@@ -63,7 +69,7 @@ export default function StratBoard () {
             window.removeEventListener("keydown", handleKeydown);
             window.removeEventListener("keyup", handleKeyUp)
         }
-    }, [])
+    }, [isErasingMode, isDrawing])
     
     return (
         <div className="flex flex-col h-screen text-2xl tracking-wider ">
