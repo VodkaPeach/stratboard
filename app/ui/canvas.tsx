@@ -6,8 +6,8 @@ import { svgPaths } from '@/app/library/data';
 
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
-    currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc, setIsDrawing, SwitchIsAlly,
-    isDrawing, isErasingMode, isErasing, setIsErasing, dragZoomLevel, isAlly, isDeleting, draggableType,
+    currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
+    isDrawing, isErasingMode, isErasing, setIsErasing, isAlly, isDeleting, draggableType,
     brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,abilityProp, iconScale
     } = useAppStore((state)=>state)
     const [hoveredObject, setHoveredObject] = useState<fabric.Object | null>(null)
@@ -52,8 +52,8 @@ const Canvas = () => {
         console.log("canvas useEffect ")
         if (canvasRef.current) {
             const fabricCanvas = new fabric.Canvas(canvasRef.current, {
-                width:1100,
-                height:600,
+                width:2000,
+                height:2000,
                 fireMiddleClick: true,
                 stopContextMenu: true, 
                 selection: false,
@@ -179,7 +179,8 @@ const Canvas = () => {
               img.hasControls = false;
               break;
             case "UtilIconDefault":
-              img.scale(0.03);
+              img.scale(0.3);
+              img.backgroundColor = "#0f0d1c"
               img.hasControls = false;
               break;
             case "UtilIconCustom":

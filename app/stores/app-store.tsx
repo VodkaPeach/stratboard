@@ -68,7 +68,7 @@ export const initAppStore = ():AppState=>{
         hoveredObject: null,
         draggableType: null,
         abilityProp: "N",
-        iconScale: 5,
+        iconScale: 3,
     }
 }
 
@@ -94,7 +94,7 @@ export const defaultInitState: AppState = {
     hoveredObject: null,
     draggableType: null,
     abilityProp: "N",
-    iconScale: 5,
+    iconScale: 3,
 }
 
 export const createAppStore = (

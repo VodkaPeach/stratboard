@@ -2,9 +2,8 @@
 import { useAppStore } from "@/app/providers/app-store-provider"
 import { Slider } from "@nextui-org/slider"
 export default function IconSizeSlider () {
-    const {iconScale, setIconScale} = useAppStore(state=>state)
+    const {setIconScale} = useAppStore(state=>state)
     return (
-        
         <div>
             <Slider 
                 size="sm"

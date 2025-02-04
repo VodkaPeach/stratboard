@@ -6,7 +6,6 @@ import StepButton from "./stepButton"
 import Image from "next/image"
 import clsx from "clsx"
 import { fabric } from "fabric"
-import { Textbox } from "fabric/fabric-impl"
 export default function SideMenu(){
     const {
         isDrawing, setIsDrawing, 
@@ -32,7 +31,22 @@ export default function SideMenu(){
         setStepDeletedObjects([[],[],[],[],[],[],[],[],[],[]])
     }
     const handleChangeBrushColor = (color: string) => {
-        setBrushColor(color);
+        switch(color){
+            case 'bg-red-600':
+                setBrushColor("red");
+                break;
+            case 'bg-white':
+                setBrushColor("white");
+                break;
+            case 'bg-black':
+                setBrushColor("black");
+                break;
+            case 'bg-yellow-400':
+                setBrushColor("yellow");
+                break;
+            default:
+                break;
+        }
     }
     const handleAddTextBox = () => {
         const textBox = new fabric.IText('点击添加文字', {
@@ -82,7 +96,7 @@ export default function SideMenu(){
                         }
 
                     )} onClick={handleIsDrawingSwitch}>
-                        <Image className="place-self-center" src={'/tools/pen.svg'} width={40} height={40} alt="PEN"/>
+                        <Image className="place-self-center" src={'/tools/pen.svg'} draggable={false} width={40} height={40} alt="PEN"/>
                     </button>
                     <button className={clsx(
                         "bg-teal-600 rounded-md hover:bg-teal-400",
@@ -91,10 +105,10 @@ export default function SideMenu(){
                         }
 
                     )} onClick={handleIsErasingModeSwitch}>
-                        <Image className="place-self-center" src={'/tools/eraser.svg'} width={40} height={40} alt="Eraser tool"/>
+                        <Image className="place-self-center" src={'/tools/eraser.svg'} draggable={false} width={40} height={40} alt="Eraser tool"/>
                     </button>
                     <button className="bg-teal-600 rounded-md hover:bg-teal-400" onClick={handleAddTextBox}>
-                        <Image className="place-self-center" src={'/tools/text.svg'} width={40} height={40} alt="TEXT"/>
+                        <Image className="place-self-center" src={'/tools/text.svg'} draggable={false} width={40} height={40} alt="TEXT"/>
                     </button>
                 </div>
                 <div className="flex flex-col gap-2">
