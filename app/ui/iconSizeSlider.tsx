@@ -32,26 +32,6 @@ export default function IconSizeSlider () {
                 onChange={setIconScale} 
                 defaultValue={3}
             />
-        </div>
-        /*
-        <div>
-            <div className="w-full pb-3">
-                英雄图标尺寸
-            </div>
-            <div className="gap-3 flex flex-row">
-                <button className="bg-teal-600 rounded-md ">
-                    小
-                </button >
-                <button className="bg-teal-600 rounded-md ">
-                    中
-                </button>
-                <button className="bg-teal-600 rounded-md ">
-                    大
-                </button>
-            </div>
-            
-        </div>*/
-
-        
+        </div>        
     )
 }

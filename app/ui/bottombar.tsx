@@ -3,7 +3,6 @@ import { useRef, useEffect } from "react";
 import Draggable from "./draggable";
 import { agents } from "@/app/library/data";
 import { useAppStore } from "../providers/app-store-provider";
-import clsx from "clsx";
 import Switch from "react-switch";
 
 export default function BottomBar(){
