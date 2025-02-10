@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import {fabric} from 'fabric';
 import { useAppStore } from '@/app/providers/app-store-provider';
 import { svgPaths } from '@/app/library/data';
+import { SITES } from '@/app/library/data';
 
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
@@ -111,6 +112,7 @@ const Canvas = () => {
             };
         }
     }, [svgMaps]);
+
 
     // default drawing preferences
     useEffect(() => {
@@ -239,16 +241,63 @@ const Canvas = () => {
       }
     },[map])
 
+    // flip objects utility function
+    const flipObjects = (objects: fabric.Object[], map: fabric.Object) => {
+      objects.forEach((object)=>{
+        object.flipY=true;
+        object.flipX=true;
+      });
+      const group = new fabric.Group([...objects, map], {
+        flipX: true,
+        flipY: true
+      })
+      canvas?.add(group);
+      group.destroy();
+      canvas?.remove(group);
+      [map, ...objects].forEach((object)=>{
+        object.dirty=true;
+      })
+      canvas?.add.apply(canvas, [map, ...objects]);
+    }
+
     // Load map on the canvas
     useEffect(() => {
       console.log("load map useEffect")
       if (canvas) {
         if (svgMaps) {
+          canvas?.clear();
             const mapObject = svgMaps[map]
             mapObject.selectable=false;
             mapObject.objectCaching=false;
+            
             changeCurrentMapObject(mapObject);
             canvas.add(mapObject)
+            const siteTexts = ["A", "B"].map((value, index) => new fabric.Text(value, {
+              fill: "white",
+              fontSize: 30,
+              left: SITES[map][index*2],
+              top: SITES[map][index*2+1],
+              selectable:true
+              //evented: false,
+            }))
+            console.log(map,"hdusa")
+            if (map=="Lotus" || map=="Haven"){
+              const cSite = new fabric.Text("C", {
+                fill: "white",
+                fontSize: 30,
+                left: SITES[map][4],
+                top: SITES[map][5],
+                selectable:true
+                //evented: false,
+              })
+              canvas?.add(cSite)
+            }
+            siteTexts.forEach((value)=>{
+              canvas?.add(value);
+            })
+            if(!isAttack){
+              flipObjects(siteTexts, mapObject)
+            }
             canvas.renderAll()
         }
       }
@@ -258,11 +307,13 @@ const Canvas = () => {
     useEffect(()=>{
         const objects = canvas?.getObjects()
         objects?.slice(1, ).forEach((e)=>{
-            e.set({flipY:true, flipX: true})
+          e.flipY = true;
+          e.flipX=true;
         })
         const group = new fabric.Group(objects, {
             flipY: true,
-            flipX: true
+            flipX: true,
+            
         })
         canvas?.add(group)
         group.destroy();
@@ -363,6 +414,11 @@ const Canvas = () => {
   useEffect(()=>{
     if(canvas){
       canvas.on('mouse:up', function(this: any, opt) {
+        if(opt.target){
+          if (opt.target.type=="text"){
+            console.log(opt.target.left, opt.target.top)
+          }
+        }
         if (isDeleting && dragTarget) {
             canvas.remove(dragTarget)
         }

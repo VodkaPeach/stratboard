@@ -26,6 +26,20 @@ export const dictionary = {
     'Sunset': "日落之城",
 };
 
+export const SITES: {[key:string]: number[]} = {
+    'Abyss': [995, 420, 154, 408],
+    'Ascent': [740, 252, 136, 194],
+    'Bind': [620, 285, 183, 236],
+    'Breeze': [941, 428, 168, 255],
+    'Fracture': [905, 452, 94, 495],
+    'Haven': [815, 325, 419, 348, 62, 322],
+    'Icebox': [995, 420, 154, 408],
+    'Lotus': [914, 300, 452, 430, 128, 468],
+    'Pearl': [870, 300, 167, 348],
+    'Split': [900, 220, 160, 260],
+    'Sunset': [777, 347, 25, 380],
+};
+
 export const agents: string[] = [
     "Astra",
     "Breach",
