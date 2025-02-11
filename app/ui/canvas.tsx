@@ -145,7 +145,7 @@ const Canvas = () => {
     // load step
     useEffect(() => {
         // remove all objects except map
-        const activeObjects = canvas?.getObjects().slice(1,)
+        const activeObjects = canvas?.getObjects().slice(2,)
         canvas?.remove(...activeObjects!)
         // add all from previous steps
         for(let i=0; i<currentStep; i++) {
@@ -292,14 +292,13 @@ const Canvas = () => {
                 fontSize: 30,
                 left: SITES[map][4],
                 top: SITES[map][5],
-                selectable:true
-                //evented: false,
+                selectable:true,
+                evented: false,
               })
-              canvas?.add(cSite)
+              siteTexts.push(cSite)
             }
-            siteTexts.forEach((value)=>{
-              canvas?.add(value);
-            })
+            const siteTextGrp = new fabric.Group(siteTexts)
+            canvas.add(siteTextGrp)
             if(!isAttack){
               flipObjects(siteTexts, mapObject)
             }
@@ -378,7 +377,6 @@ const Canvas = () => {
             const pointer = canvas.getPointer(opt.e)
             canvas?.add(tempRect)
             setDrawRectPos({x: pointer.x, y: pointer.y})
-            //console.log(canvas.getObjects())
           }
           if(isDrawing && drawingMode=="line"){
             setIsDrawingLine(true);
