@@ -14,9 +14,13 @@ export default function SideMenu(){
         setBrushColor,
         setStepState,
         setStepDeletedObjects,
-        currentStep
+        currentStep,
+        drawingMode,
+        setDrawingMode,
     } = useAppStore(state=>state)
-    
+    const handleChangeDrawingMode = (mode: string) => {
+        setDrawingMode(mode)
+    }
     const handleIsDrawingSwitch = () => {
         setIsErasingMode(false)
         setIsDrawing(!isDrawing)
@@ -90,17 +94,19 @@ export default function SideMenu(){
                 <div>工具</div>
                 <div className="flex flex-row gap-2">
                     <button className={clsx(
-                        "bg-teal-600 rounded-md hover:bg-teal-400",
+                        " rounded-md hover:bg-teal-400",
                         {
-                            'bg-teal-200': isDrawing
+                            "bg-teal-600": !isDrawing,
+                            'bg-teal-200': isDrawing,
                         }
 
-                    )} onClick={handleIsDrawingSwitch}>
+                    )} onClick={()=>handleIsDrawingSwitch()}>
                         <Image className="place-self-center" src={'/tools/pen.svg'} draggable={false} width={40} height={40} alt="PEN"/>
                     </button>
                     <button className={clsx(
-                        "bg-teal-600 rounded-md hover:bg-teal-400",
+                        "rounded-md hover:bg-teal-400",
                         {
+                            "bg-teal-600": !isErasingMode,
                             'bg-teal-200': isErasingMode
                         }
 
@@ -111,17 +117,40 @@ export default function SideMenu(){
                         <Image className="place-self-center" src={'/tools/text.svg'} draggable={false} width={40} height={40} alt="TEXT"/>
                     </button>
                 </div>
+                {(isDrawing) && 
                 <div className="flex flex-col gap-2">
-                    {(isDrawing || isDrawing) && 
-                        <div className="flex flex-row gap-5">
-                            <p className="text-sm">颜色</p>
-                            <div className="flex flex-row gap-2">
-                                {colorBlocks}
-                            </div>
+                    <div className="flex flex-row gap-1">
+                        <p className="text-sm mr-4">类型</p>
+                        <button className={clsx(
+                        " rounded-sm hover:bg-teal-400",
+                        {
+                            'bg-teal-600': drawingMode!=="line",
+                            'bg-teal-200': drawingMode==="line"
+                        }
+
+                    )} onClick={()=>handleChangeDrawingMode("line")}>
+                            <Image className="place-self-center" src={'/tools/line.svg'} draggable={false} width={25} height={25} alt="line"/>
+                        </button>
+                        <button className={clsx(
+                        "rounded-sm hover:bg-teal-400",
+                        {
+                            'bg-teal-600': drawingMode!=="rect",
+                            'bg-teal-200': drawingMode==="rect"
+                        }
+
+                    )} onClick={()=>handleChangeDrawingMode("rect")}>
+                            <Image className="place-self-center" src={'/tools/rect.svg'} draggable={false} width={25} height={25} alt="rect"/>
+                        </button>
+                    </div>
+                    <div className="flex flex-row gap-5">
+                        <p className="text-sm">颜色</p>
+                        <div className="flex flex-row gap-2">
+                            {colorBlocks}
                         </div>
-                    }
-                    {(isDrawing || isErasingMode) && <BrushSizeSlider />}
-                </div>
+                    </div>
+                    
+                    {(isDrawing) && <BrushSizeSlider />}
+                </div>}
             </div>
         </div>
     )

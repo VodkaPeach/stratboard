@@ -24,6 +24,9 @@ export type AppState = {
   draggableType: string | null
   abilityProp: string
   iconScale: number | number[]
+  drawingMode: string
+  isDrawingRect: boolean
+  isDrawingLine: boolean
 }
 
 export type AppActions = {
@@ -49,6 +52,9 @@ export type AppActions = {
   setDraggableType: (newType: string | null) => void
   setAbilityProp: (prop: string) => void
   setIconScale: (scale: number | number[]) => void
+  setDrawingMode: (mode: string) => void
+  setIsDrawingRect: (boo: boolean) => void
+  setIsDrawingLine: (boo: boolean) => void
 }
 
 export type AppStore = AppState & AppActions
@@ -69,6 +75,9 @@ export const initAppStore = ():AppState=>{
         draggableType: null,
         abilityProp: "N",
         iconScale: 3,
+        drawingMode: "line",
+        isDrawingRect: false,
+        isDrawingLine: false,
     }
 }
 
@@ -95,6 +104,9 @@ export const defaultInitState: AppState = {
     draggableType: null,
     abilityProp: "N",
     iconScale: 3,
+    drawingMode:"line",
+    isDrawingRect: false,
+    isDrawingLine: false,
 }
 
 export const createAppStore = (
@@ -123,6 +135,9 @@ export const createAppStore = (
     setHoveredObject: (target) => set(()=>({hoveredObject: target})),
     setDraggableType: (newDraggableType) => set(()=>({draggableType: newDraggableType})),
     setAbilityProp: (prop) => set(()=>({abilityProp: prop})),
-    setIconScale: (scale) => set(()=>({iconScale: scale}))
+    setIconScale: (scale) => set(()=>({iconScale: scale})),
+    setDrawingMode: (mode) => set(()=>({drawingMode: mode})),
+    setIsDrawingRect: (boo) => set(()=>({isDrawingRect: boo})),
+    setIsDrawingLine: (boo) => set(()=>({isDrawingLine: boo})),
   }))
 }

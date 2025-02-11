@@ -73,13 +73,13 @@ export default function StratBoard () {
     
     return (
         <div className="flex flex-col h-screen text-2xl tracking-wider ">
-            <div className="bg-slate-950 border-b border-slate-600 h-[10%] px-60 py-2"><TopNav /></div>
+            <div className="bg-slate-950 border-b border-slate-600 h-[7%] px-60 py-2"><TopNav /></div>
             <div className="flex w-full h-[79%] flex-row border-b border-slate-600">
                 <div className="bg-slate-900 border-r border-slate-600 px-3 w-72 overflow-auto"><SideMenu /></div>
                 <div onClick={handleResetHover} className="border-r flex-1 overflow-hidden border-slate-600"><Canvas /></div>
                 <div className="bg-slate-900"><RightPanel /></div>
             </div>
-            <div className="bg-slate-950 h-[11%]"><BottomBar /></div>
+            <div className="bg-slate-950 h-[14%]"><BottomBar /></div>
         </div>
     );
 }

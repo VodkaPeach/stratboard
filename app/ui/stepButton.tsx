@@ -15,8 +15,9 @@ const StepButton: React.FC<stepNumberButton> = ({value}) => {
     return(
         <button
             className={clsx(
-                'w-10 h-10 rounded-md hover:bg-slate-700',
+                'w-10 h-10 rounded-md ',
                 {
+                    "hover:bg-slate-700": currentStep !== value,
                 'bg-cyan-900 hover:bg-cyan-800': currentStep === value,
             })}
             onClick={handleChangeStep}

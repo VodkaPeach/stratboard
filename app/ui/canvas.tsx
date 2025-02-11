@@ -5,21 +5,25 @@ import { useAppStore } from '@/app/providers/app-store-provider';
 import { svgPaths } from '@/app/library/data';
 import { SITES } from '@/app/library/data';
 
+
+
 const Canvas = () => {
     const {map, canvas, changeCanvas, isAttack, svgMaps, changeSVGMaps, 
     currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
     isDrawing, isErasingMode, isErasing, setIsErasing, isAlly, isDeleting, draggableType,
-    brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,abilityProp, iconScale
+    brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,abilityProp, iconScale, drawingMode, isDrawingRect,
+    setIsDrawingRect, isDrawingLine, setIsDrawingLine
     } = useAppStore((state)=>state)
     const [hoveredObject, setHoveredObject] = useState<fabric.Object | null>(null)
     const [dragTarget, setDragTarget] = useState<fabric.Object | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [iconDropPos, setIconDropPos] = useState({x: 0, y: 0})
+    const [DrawRectPos, setDrawRectPos] = useState({x:0, y: 0})
+    const [rect, setRect] = useState<fabric.Object | null>(null);
     interface LoadedSVG {
         path: string;
         svg: fabric.Object;
     }
-
     const removeObjectFromStepsForward = (object: fabric.Object) => {
         for(let i = currentStep-1; i<10; i++) {
             stepDeletedObjects[i].push(object)
@@ -126,9 +130,10 @@ const Canvas = () => {
     useEffect(()=>{
       console.log("set isDrawing useEffect")
       if(canvas){
-        canvas.isDrawingMode=isDrawing
+        canvas.isDrawingMode=drawingMode=="line" && isDrawing
+        console.log(canvas.isDrawingMode, "isdrawingmode")
       }
-    },[isDrawing])
+    },[drawingMode, isDrawing])
 
     
 
@@ -353,11 +358,98 @@ const Canvas = () => {
       }
     }, [canvas])
 
+    // mouse down useEffect, dependency: currentMapObject, isDrawing
+    useEffect(()=>{
+      if(canvas){
+        canvas.on('mouse:down', function(this: any, opt){
+          if(isDrawing && drawingMode=="rect"){
+            setIsDrawingRect(true)
+            const tempRect = new fabric.Rect({
+              left:0,
+              top: 0,
+              width:0,
+              height:0,
+              stroke:'red',
+              strokeWidth:3,
+              fill:'',
+              selectable:true,
+            })
+            setRect(tempRect)
+            const pointer = canvas.getPointer(opt.e)
+            canvas?.add(tempRect)
+            setDrawRectPos({x: pointer.x, y: pointer.y})
+            //console.log(canvas.getObjects())
+          }
+          if(isDrawing && drawingMode=="line"){
+            setIsDrawingLine(true);
+          }
+          if (opt.target?.isType("image")) {
+            setDragTarget(opt.target)
+          }
+          if(isErasingMode){
+            setIsErasing(true)
+            //console.log("mouse down start erasing")
+          }
+          console.log("drawing mode: "+isDrawing+isErasingMode)
+          if (!isDrawing && !isErasingMode){
+            if (!opt.target || opt.target==currentMapObject) {
+              console.log("triggered")
+              this.isDragging = true;
+              this.selection = false;
+              this.lastPosX = opt.e.clientX;
+              this.lastPosY = opt.e.clientY;
+            }
+          }
+        })
+      }
+      return () => {
+        canvas?.off("mouse:down");
+      }
+    }, [isDrawing, currentMapObject, isErasingMode, drawingMode])
+
     // mouse down/move/up effect, dependency: isDrawing, isErasing, currentMapObject
     useEffect(()=>{
       console.log("mouse move event useEffect")
         if(canvas){            
             canvas.on('mouse:move', function(this: any, opt) {
+              if(isDrawingRect && rect){
+                const pointer = canvas.getPointer(opt.e)
+                console.log(pointer.x, pointer.y, DrawRectPos.x, DrawRectPos.y)
+                console.log(Math.abs((pointer.x-DrawRectPos.x)), Math.abs((pointer.y-DrawRectPos.y)))
+                const relRectWidth = pointer.x-DrawRectPos.x
+                const relRectHeight = pointer.y-DrawRectPos.y
+                if(relRectWidth >=0 && relRectHeight>=0){
+                  rect.set({
+                    left: DrawRectPos.x,
+                    top: DrawRectPos.y,
+                  })
+                }
+                else if (relRectWidth <0 && relRectHeight<0){
+                  rect.set({
+                    left: pointer.x,
+                    top: pointer.y,
+                  })
+                }
+                else if (relRectWidth <0 && relRectHeight>=0){
+                  rect.set({
+                    left: pointer.x,
+                    top: DrawRectPos.y
+                  })
+                }
+                else if (relRectWidth >=0 && relRectHeight<0){
+                  rect.set({
+                    left: DrawRectPos.x,
+                    top: pointer.y
+                  })
+                }
+                rect.set({
+                  width: Math.abs(relRectWidth),
+                  height: Math.abs(relRectHeight)
+                })
+                console.log(rect, "rect")
+                console.log(canvas.getObjects())
+                canvas.renderAll()
+              }
               if (isErasing) {
                 const erasingTarget = opt.target;
                 if (erasingTarget?.isType("path") ){
@@ -380,40 +472,16 @@ const Canvas = () => {
         return () => {
           canvas?.off('mouse:move')
         }
-    }, [currentMapObject, isDrawing, isErasing])
+    }, [currentMapObject, isDrawing, isErasing, isDrawingRect, DrawRectPos, rect])
 
-  // mouse down useEffect, dependency: currentMapObject, isDrawing
-  useEffect(()=>{
-    if(canvas){
-      canvas.on('mouse:down', function(this: any, opt){
-        if (opt.target?.isType("image")) {
-            setDragTarget(opt.target)
-        }
-        if(isErasingMode){
-          setIsErasing(true)
-          //console.log("mouse down start erasing")
-        }
-        var evt = opt.e;
-        console.log("drawing mode: "+isDrawing+isErasingMode)
-        if (!canvas.isDrawingMode && !isErasingMode){
-          if (!opt.target || opt.target==currentMapObject) {
-            console.log("triggered")
-            this.isDragging = true;
-            this.selection = false;
-            this.lastPosX = evt.clientX;
-            this.lastPosY = evt.clientY;
-          }
-        }
-      })
-    }
-    return () => {
-      canvas?.off("mouse:down");
-    }
-  }, [isDrawing, currentMapObject, isErasingMode])
+  
 
   useEffect(()=>{
     if(canvas){
       canvas.on('mouse:up', function(this: any, opt) {
+        if(isDrawingRect){
+          setIsDrawingRect(false)
+        }
         if(opt.target){
           if (opt.target.type=="text"){
             console.log(opt.target.left, opt.target.top)
@@ -441,7 +509,7 @@ const Canvas = () => {
     return () => {
       canvas?.off("mouse:up");
     }
-  }, [canvas, isErasing, isDeleting])
+  }, [canvas, isErasing, isDeleting, isDrawingRect])
 
   useEffect(()=>{
     canvas?.on("path:created", (e)=>{
