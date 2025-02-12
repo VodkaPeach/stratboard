@@ -29,7 +29,18 @@ const Canvas = () => {
             stepDeletedObjects[i].push(object)
         }
     }
-
+    let lastTwoPoints: {x: number, y: number}[] = []
+    const arrow = new fabric.Triangle({
+      fill: "",
+      stroke: "red",
+      width: 5,
+      angle: 0,
+      height: 10,
+      left: 0,
+      top:0,
+      originX: "center",
+      originY: "center",
+    })
     useEffect(()=>{
       console.log("SVG LOAD useEffect")
         Promise.all<LoadedSVG>(
@@ -158,6 +169,8 @@ const Canvas = () => {
     }, [currentStep])
 
     const lastGoodPos = useRef<{left: number | undefined, top: number | undefined}>({left: 100, top:100})
+
+
 
     useEffect(()=>{
       console.log("drag drop icon useEffect")
@@ -357,10 +370,39 @@ const Canvas = () => {
       }
     }, [canvas])
 
+    const calcArrorDeg = (x1: number, y1: number, x2: number, y2: number) => {
+      const x = x2-x1;
+      const y = y2-y1;
+      console.log(x, y)
+      if(x===0){
+        return (y>=0) ? 180 : 0
+      }
+      if(y===0){
+        return (x>0) ? 90 : 270
+      }
+      if(x>0){
+        return (y>0) ? 90+(Math.atan(y/x)*180/Math.PI) : Math.atan(x/-y)*180/Math.PI
+      }
+      if (x<0){
+        return (y>0) ? 180+(Math.atan(-x/y)*180/Math.PI) : 270+Math.atan(y/-x)*180/Math.PI
+      }
+
+    }
     // mouse down useEffect, dependency: currentMapObject, isDrawing
     useEffect(()=>{
       if(canvas){
         canvas.on('mouse:down', function(this: any, opt){
+          if(isDrawing && drawingMode=="line"){
+            const pointer = canvas.getPointer(opt.e)
+            console.log("added")
+            arrow.set({
+              left: pointer.x,
+              top: pointer.y,
+              angle: 0
+            })
+            setRect(arrow)
+            canvas.add(arrow)
+          }
           if(isDrawing && drawingMode=="rect"){
             setIsDrawingRect(true)
             const tempRect = new fabric.Rect({
@@ -410,10 +452,31 @@ const Canvas = () => {
       console.log("mouse move event useEffect")
         if(canvas){            
             canvas.on('mouse:move', function(this: any, opt) {
+              if(isDrawingLine && rect){
+                const pointer = canvas.getPointer(opt.e);
+                //console.log(pointer.x, pointer.y, "odsa")
+                //console.log(arrow.left)
+                if (lastTwoPoints.length === 10) {
+                  rect.set({
+                    angle: calcArrorDeg(lastTwoPoints[0].x, lastTwoPoints[0].y, lastTwoPoints[9].x, lastTwoPoints[9].y)
+                  })
+                  //console.log(calcArrorDeg(lastTwoPoints[0].x, lastTwoPoints[0].y, lastTwoPoints[1].x, lastTwoPoints[1].y))
+                  console.log(rect.angle)
+                  lastTwoPoints = []
+                }
+                lastTwoPoints.push({x: pointer.x, y: pointer.y})
+                rect.set({
+                  left: pointer.x,
+                  top: pointer.y,
+                })
+                
+                canvas.renderAll()
+              }
               if(isDrawingRect && rect){
                 const pointer = canvas.getPointer(opt.e)
-                console.log(pointer.x, pointer.y, DrawRectPos.x, DrawRectPos.y)
-                console.log(Math.abs((pointer.x-DrawRectPos.x)), Math.abs((pointer.y-DrawRectPos.y)))
+                console.log(rect, "rect")
+                //console.log(pointer.x, pointer.y, DrawRectPos.x, DrawRectPos.y)
+                //console.log(Math.abs((pointer.x-DrawRectPos.x)), Math.abs((pointer.y-DrawRectPos.y)))
                 const relRectWidth = pointer.x-DrawRectPos.x
                 const relRectHeight = pointer.y-DrawRectPos.y
                 if(relRectWidth >=0 && relRectHeight>=0){
@@ -444,8 +507,6 @@ const Canvas = () => {
                   width: Math.abs(relRectWidth),
                   height: Math.abs(relRectHeight)
                 })
-                console.log(rect, "rect")
-                console.log(canvas.getObjects())
                 canvas.renderAll()
               }
               if (isErasing) {
@@ -470,13 +531,16 @@ const Canvas = () => {
         return () => {
           canvas?.off('mouse:move')
         }
-    }, [currentMapObject, isDrawing, isErasing, isDrawingRect, DrawRectPos, rect])
+    }, [currentMapObject, isDrawing, isErasing, isDrawingRect, DrawRectPos, rect, isDrawingLine])
 
   
 
   useEffect(()=>{
     if(canvas){
       canvas.on('mouse:up', function(this: any, opt) {
+        if(isDrawingLine){
+          setIsDrawingLine(false)
+        }
         if(isDrawingRect){
           setIsDrawingRect(false)
         }
@@ -507,14 +571,15 @@ const Canvas = () => {
     return () => {
       canvas?.off("mouse:up");
     }
-  }, [canvas, isErasing, isDeleting, isDrawingRect])
+  }, [canvas, isErasing, isDeleting, isDrawingRect, isDrawingLine])
 
   useEffect(()=>{
     canvas?.on("path:created", (e)=>{
-        stepState[currentStep-1].push(canvas?.getObjects().at(-1)!)
+      console.log(canvas.getObjects().at(-1))
+      stepState[currentStep-1].push(canvas?.getObjects().at(-1)!)
     })
     return () => {
-        canvas?.off("path:created")
+      canvas?.off("path:created")
     }
   })
   
