@@ -40,8 +40,10 @@ export default function BottomBar(){
         )
     )
     return(
-        <div ref={scrollContainerRef} className="flex flow-row overflow-auto">  
-          <div className="w-70 pl-20 pr-5 py-8">
+        <div ref={scrollContainerRef} className="flex overflow-auto h-full">  
+          <div className="flex items-center">
+            <div className="w-28"></div>
+            <p className="w-24 text-center">{isAlly? '友方' : '敌方'} </p>
             <Switch 
                 onColor="#42ffec"
                 offColor="#ff4242"
@@ -50,9 +52,14 @@ export default function BottomBar(){
                 uncheckedIcon={false}
                 onChange={handleAllySwitch}
             />
+            <div className="w-12"></div>
+            <div className="flex flex-row gap-1">
+              {agentIconArray}
+              <div className="w-72 shrink-0"></div>
+            </div>
+            
           </div>
-          <p className="w-48 text-center py-8">{isAlly? '友方' : '敌方'} </p>
-          <div className="flex my-0.5 pl-12 gap-1 py-1">{agentIconArray}</div>
+          
         </div>
     )
 }

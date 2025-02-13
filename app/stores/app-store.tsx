@@ -27,6 +27,7 @@ export type AppState = {
   drawingMode: string
   isDrawingRect: boolean
   isDrawingLine: boolean
+  isDrawingArrow: boolean
 }
 
 export type AppActions = {
@@ -55,6 +56,7 @@ export type AppActions = {
   setDrawingMode: (mode: string) => void
   setIsDrawingRect: (boo: boolean) => void
   setIsDrawingLine: (boo: boolean) => void
+  setIsDrawingArrow: (boo: boolean) => void
 }
 
 export type AppStore = AppState & AppActions
@@ -66,7 +68,7 @@ export const initAppStore = ():AppState=>{
         currentHoverAgent: null, 
         dragZoomLevel: 1, isAlly: true,
         isDeleting: false,
-        brushColor: "black",
+        brushColor: "white",
         brushWidth: 2,
         currentStep: 0,
         stepState: [[],[],[],[],[],[],[],[],[],[]],
@@ -78,6 +80,7 @@ export const initAppStore = ():AppState=>{
         drawingMode: "line",
         isDrawingRect: false,
         isDrawingLine: false,
+        isDrawingArrow: false,
     }
 }
 
@@ -95,7 +98,7 @@ export const defaultInitState: AppState = {
     dragZoomLevel: 1,
     isAlly: true,
     isDeleting: false,
-    brushColor: "black",
+    brushColor: "white",
     brushWidth: 2,
     currentStep: 0, 
     stepState: [[],[],[],[],[],[],[],[],[],[]],
@@ -107,6 +110,7 @@ export const defaultInitState: AppState = {
     drawingMode:"line",
     isDrawingRect: false,
     isDrawingLine: false,
+    isDrawingArrow: false,
 }
 
 export const createAppStore = (
@@ -139,5 +143,6 @@ export const createAppStore = (
     setDrawingMode: (mode) => set(()=>({drawingMode: mode})),
     setIsDrawingRect: (boo) => set(()=>({isDrawingRect: boo})),
     setIsDrawingLine: (boo) => set(()=>({isDrawingLine: boo})),
+    setIsDrawingArrow: (boo) => set(()=>({isDrawingArrow: boo})),
   }))
 }

@@ -11,6 +11,7 @@ export default function SideMenu(){
         isDrawing, setIsDrawing, 
         isErasingMode, setIsErasingMode, 
         canvas,
+        brushColor,
         setBrushColor,
         setStepState,
         setStepDeletedObjects,
@@ -35,22 +36,7 @@ export default function SideMenu(){
         setStepDeletedObjects([[],[],[],[],[],[],[],[],[],[]])
     }
     const handleChangeBrushColor = (color: string) => {
-        switch(color){
-            case 'bg-red-600':
-                setBrushColor("red");
-                break;
-            case 'bg-white':
-                setBrushColor("white");
-                break;
-            case 'bg-black':
-                setBrushColor("black");
-                break;
-            case 'bg-yellow-400':
-                setBrushColor("yellow");
-                break;
-            default:
-                break;
-        }
+        setBrushColor(color)
     }
     const handleAddTextBox = () => {
         const textBox = new fabric.IText('点击添加文字', {
@@ -73,7 +59,13 @@ export default function SideMenu(){
         canvas?.renderAll();
     }
     const sequence = [...Array(11).keys()].slice(1).map((value) => <StepButton key={value} value={value}/>)
-    const colorBlocks = ['bg-red-600', 'bg-white', 'bg-black', 'bg-yellow-400'].map((value, index) => <button key={index+value} onClick={()=>handleChangeBrushColor(value)} className={`${value} rounded-md w-5 h-5`}></button>)
+    const colorBlocks = ['red', 'white', 'yellow'].map((value, index) =>
+        <button key={index+value} onClick={()=>handleChangeBrushColor(value)} className={clsx(
+            `bg-${value} bg-${value}-600 rounded-md w-5 h-5`,
+            {
+                'border-1 border-white': brushColor == value
+            }
+        )}></button>)
     return(
         <div className="flex flex-col my-4 gap-5">
             <div className="flex flex-row basis-1/6">
@@ -130,6 +122,16 @@ export default function SideMenu(){
 
                     )} onClick={()=>handleChangeDrawingMode("line")}>
                             <Image className="place-self-center" src={'/tools/line.svg'} draggable={false} width={25} height={25} alt="line"/>
+                        </button>
+                        <button className={clsx(
+                        "rounded-sm hover:bg-teal-400",
+                        {
+                            'bg-teal-600': drawingMode!=="arrow",
+                            'bg-teal-200': drawingMode==="arrow"
+                        }
+
+                    )} onClick={()=>handleChangeDrawingMode("arrow")}>
+                            <Image className="place-self-center" src={'/tools/arrow.svg'} draggable={false} width={25} height={25} alt="arrow"/>
                         </button>
                         <button className={clsx(
                         "rounded-sm hover:bg-teal-400",

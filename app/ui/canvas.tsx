@@ -12,7 +12,7 @@ const Canvas = () => {
     currentMapObject, changeCurrentMapObject, draggableSrc, setDraggableSrc,
     isDrawing, isErasingMode, isErasing, setIsErasing, isAlly, isDeleting, draggableType,
     brushWidth, brushColor, stepState, currentStep, setCurrentStep, stepDeletedObjects,abilityProp, iconScale, drawingMode, isDrawingRect,
-    setIsDrawingRect, isDrawingLine, setIsDrawingLine
+    setIsDrawingRect, isDrawingLine, setIsDrawingLine, isDrawingArrow, setIsDrawingArrow
     } = useAppStore((state)=>state)
     const [hoveredObject, setHoveredObject] = useState<fabric.Object | null>(null)
     const [dragTarget, setDragTarget] = useState<fabric.Object | null>(null);
@@ -30,17 +30,7 @@ const Canvas = () => {
         }
     }
     let lastTwoPoints: {x: number, y: number}[] = []
-    const arrow = new fabric.Triangle({
-      fill: "",
-      stroke: "red",
-      width: 5,
-      angle: 0,
-      height: 10,
-      left: 0,
-      top:0,
-      originX: "center",
-      originY: "center",
-    })
+    
     useEffect(()=>{
       console.log("SVG LOAD useEffect")
         Promise.all<LoadedSVG>(
@@ -141,8 +131,8 @@ const Canvas = () => {
     useEffect(()=>{
       console.log("set isDrawing useEffect")
       if(canvas){
-        canvas.isDrawingMode=drawingMode=="line" && isDrawing
-        console.log(canvas.isDrawingMode, "isdrawingmode")
+        canvas.isDrawingMode=(drawingMode=="line" || drawingMode=="arrow") && isDrawing
+        //console.log(canvas.isDrawingMode, "isdrawingmode")
       }
     },[drawingMode, isDrawing])
 
@@ -392,9 +382,23 @@ const Canvas = () => {
     useEffect(()=>{
       if(canvas){
         canvas.on('mouse:down', function(this: any, opt){
-          if(isDrawing && drawingMode=="line"){
+          if(isDrawing && drawingMode=="arrow"){
+            setIsDrawingArrow(true)
+            const arrow = new fabric.Triangle({
+              fill: brushColor,
+              //stroke: brushColor,
+              width: 10,
+              angle: 0,
+              height: 15,
+              left: 0,
+              top:0,
+              originX: "center",
+              originY: "center",
+              strokeWidth: brushWidth as number,
+              selectable: false,
+              perPixelTargetFind: true
+            })
             const pointer = canvas.getPointer(opt.e)
-            console.log("added")
             arrow.set({
               left: pointer.x,
               top: pointer.y,
@@ -402,23 +406,28 @@ const Canvas = () => {
             })
             setRect(arrow)
             canvas.add(arrow)
+            
           }
           if(isDrawing && drawingMode=="rect"){
             setIsDrawingRect(true)
+            const pointer = canvas.getPointer(opt.e)
+            setDrawRectPos({x: pointer.x, y: pointer.y})
             const tempRect = new fabric.Rect({
-              left:0,
-              top: 0,
+              left:pointer.x,
+              top: pointer.y,
               width:0,
               height:0,
-              stroke:'red',
-              strokeWidth:3,
+              stroke: brushColor,
+              strokeWidth:brushWidth as number,
               fill:'',
-              selectable:true,
+              selectable: false,
+              perPixelTargetFind: true
             })
             setRect(tempRect)
-            const pointer = canvas.getPointer(opt.e)
+            
             canvas?.add(tempRect)
-            setDrawRectPos({x: pointer.x, y: pointer.y})
+            
+            
           }
           if(isDrawing && drawingMode=="line"){
             setIsDrawingLine(true);
@@ -445,23 +454,21 @@ const Canvas = () => {
       return () => {
         canvas?.off("mouse:down");
       }
-    }, [isDrawing, currentMapObject, isErasingMode, drawingMode])
+    }, [isDrawing, currentMapObject, isErasingMode, drawingMode, brushWidth])
 
     // mouse down/move/up effect, dependency: isDrawing, isErasing, currentMapObject
     useEffect(()=>{
       console.log("mouse move event useEffect")
         if(canvas){            
             canvas.on('mouse:move', function(this: any, opt) {
-              if(isDrawingLine && rect){
+              if(isDrawingArrow && rect){
                 const pointer = canvas.getPointer(opt.e);
                 //console.log(pointer.x, pointer.y, "odsa")
                 //console.log(arrow.left)
                 if (lastTwoPoints.length === 10) {
                   rect.set({
                     angle: calcArrorDeg(lastTwoPoints[0].x, lastTwoPoints[0].y, lastTwoPoints[9].x, lastTwoPoints[9].y)
-                  })
-                  //console.log(calcArrorDeg(lastTwoPoints[0].x, lastTwoPoints[0].y, lastTwoPoints[1].x, lastTwoPoints[1].y))
-                  console.log(rect.angle)
+                  })  
                   lastTwoPoints = []
                 }
                 lastTwoPoints.push({x: pointer.x, y: pointer.y})
@@ -474,7 +481,6 @@ const Canvas = () => {
               }
               if(isDrawingRect && rect){
                 const pointer = canvas.getPointer(opt.e)
-                console.log(rect, "rect")
                 //console.log(pointer.x, pointer.y, DrawRectPos.x, DrawRectPos.y)
                 //console.log(Math.abs((pointer.x-DrawRectPos.x)), Math.abs((pointer.y-DrawRectPos.y)))
                 const relRectWidth = pointer.x-DrawRectPos.x
@@ -511,7 +517,7 @@ const Canvas = () => {
               }
               if (isErasing) {
                 const erasingTarget = opt.target;
-                if (erasingTarget?.isType("path") ){
+                if (erasingTarget?.isType("path") || erasingTarget?.isType("rect") || erasingTarget?.isType("triangle")){
                     removeObjectFromStepsForward(erasingTarget)
                     canvas.remove(erasingTarget);
                     canvas.renderAll();
@@ -531,13 +537,16 @@ const Canvas = () => {
         return () => {
           canvas?.off('mouse:move')
         }
-    }, [currentMapObject, isDrawing, isErasing, isDrawingRect, DrawRectPos, rect, isDrawingLine])
+    }, [currentMapObject, isDrawing, isErasing, isDrawingRect, DrawRectPos, rect, isDrawingLine, isDrawingArrow])
 
   
 
   useEffect(()=>{
     if(canvas){
       canvas.on('mouse:up', function(this: any, opt) {
+        if(isDrawingArrow){ 
+          setIsDrawingArrow(false)
+        }
         if(isDrawingLine){
           setIsDrawingLine(false)
         }
@@ -571,7 +580,7 @@ const Canvas = () => {
     return () => {
       canvas?.off("mouse:up");
     }
-  }, [canvas, isErasing, isDeleting, isDrawingRect, isDrawingLine])
+  }, [canvas, isErasing, isDeleting, isDrawingRect, isDrawingLine, isDrawingArrow])
 
   useEffect(()=>{
     canvas?.on("path:created", (e)=>{
