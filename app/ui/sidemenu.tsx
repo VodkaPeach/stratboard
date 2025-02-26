@@ -28,6 +28,16 @@ export default function SideMenu(){
     }
     const handleIsErasingModeSwitch = () => {
         setIsDrawing(false)
+        
+        //genius
+        //performance
+        if(!isErasingMode){
+            canvas?.forEachObject((obj) => {
+                obj.dirty = true; // Mark object as needing re-render
+                obj.setCoords(); // Refresh object coordinates
+              });
+              canvas?.requestRenderAll(); // Force redraw
+        }
         setIsErasingMode(!isErasingMode)
     }
     const handleDeleteEverything  = () => {

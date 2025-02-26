@@ -65,8 +65,9 @@ const Canvas = () => {
                 selection: false,
                 preserveObjectStacking: true,
                 isDrawingMode:isDrawing,
+                //perPixelTargetFind: true,
+                targetFindTolerance: 5 ,
             });
-
             changeCanvas(fabricCanvas);
     
             fabricCanvas.backgroundColor = 'black';
@@ -396,7 +397,7 @@ const Canvas = () => {
               originY: "center",
               strokeWidth: brushWidth as number,
               selectable: false,
-              perPixelTargetFind: true
+              //perPixelTargetFind: true
             })
             const pointer = canvas.getPointer(opt.e)
             arrow.set({
@@ -421,7 +422,7 @@ const Canvas = () => {
               strokeWidth:brushWidth as number,
               fill:'',
               selectable: false,
-              perPixelTargetFind: true
+              perPixelTargetFind: true,
             })
             setRect(tempRect)
             
@@ -454,7 +455,7 @@ const Canvas = () => {
       return () => {
         canvas?.off("mouse:down");
       }
-    }, [isDrawing, currentMapObject, isErasingMode, drawingMode, brushWidth])
+    }, [isDrawing, currentMapObject, isErasingMode, drawingMode, brushWidth, brushColor])
 
     // mouse down/move/up effect, dependency: isDrawing, isErasing, currentMapObject
     useEffect(()=>{
@@ -517,6 +518,7 @@ const Canvas = () => {
               }
               if (isErasing) {
                 const erasingTarget = opt.target;
+                console.log(erasingTarget)
                 if (erasingTarget?.isType("path") || erasingTarget?.isType("rect") || erasingTarget?.isType("triangle")){
                     removeObjectFromStepsForward(erasingTarget)
                     canvas.remove(erasingTarget);
@@ -552,6 +554,7 @@ const Canvas = () => {
         }
         if(isDrawingRect){
           setIsDrawingRect(false)
+          console.log(rect?.perPixelTargetFind)
         }
         if(opt.target){
           if (opt.target.type=="text"){
